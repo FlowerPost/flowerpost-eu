@@ -10,11 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlagodarimRouteImport } from './routes/blagodarim'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as KolichkaRouteImport } from './routes/kolichka'
 import { Route as PoruchajRouteImport } from './routes/poruchaj'
+import { Route as ProslediPoruchkaRouteImport } from './routes/prosledi-poruchka'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlagodarimRoute = BlagodarimRouteImport.update({
+  id: '/blagodarim',
+  path: '/blagodarim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KolichkaRoute = KolichkaRouteImport.update({
+  id: '/kolichka',
+  path: '/kolichka',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PoruchajRoute = PoruchajRouteImport.update({
@@ -22,31 +41,71 @@ const PoruchajRoute = PoruchajRouteImport.update({
   path: '/poruchaj',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProslediPoruchkaRoute = ProslediPoruchkaRouteImport.update({
+  id: '/prosledi-poruchka',
+  path: '/prosledi-poruchka',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/blagodarim': typeof BlagodarimRoute
+  '/checkout': typeof CheckoutRoute
+  '/kolichka': typeof KolichkaRoute
   '/poruchaj': typeof PoruchajRoute
+  '/prosledi-poruchka': typeof ProslediPoruchkaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blagodarim': typeof BlagodarimRoute
+  '/checkout': typeof CheckoutRoute
+  '/kolichka': typeof KolichkaRoute
   '/poruchaj': typeof PoruchajRoute
+  '/prosledi-poruchka': typeof ProslediPoruchkaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/blagodarim': typeof BlagodarimRoute
+  '/checkout': typeof CheckoutRoute
+  '/kolichka': typeof KolichkaRoute
   '/poruchaj': typeof PoruchajRoute
+  '/prosledi-poruchka': typeof ProslediPoruchkaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/poruchaj'
+  fullPaths:
+    | '/'
+    | '/blagodarim'
+    | '/checkout'
+    | '/kolichka'
+    | '/poruchaj'
+    | '/prosledi-poruchka'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/poruchaj'
-  id: '__root__' | '/' | '/poruchaj'
+  to:
+    | '/'
+    | '/blagodarim'
+    | '/checkout'
+    | '/kolichka'
+    | '/poruchaj'
+    | '/prosledi-poruchka'
+  id:
+    | '__root__'
+    | '/'
+    | '/blagodarim'
+    | '/checkout'
+    | '/kolichka'
+    | '/poruchaj'
+    | '/prosledi-poruchka'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BlagodarimRoute: typeof BlagodarimRoute
+  CheckoutRoute: typeof CheckoutRoute
+  KolichkaRoute: typeof KolichkaRoute
   PoruchajRoute: typeof PoruchajRoute
+  ProslediPoruchkaRoute: typeof ProslediPoruchkaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +117,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blagodarim': {
+      id: '/blagodarim'
+      path: '/blagodarim'
+      fullPath: '/blagodarim'
+      preLoaderRoute: typeof BlagodarimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kolichka': {
+      id: '/kolichka'
+      path: '/kolichka'
+      fullPath: '/kolichka'
+      preLoaderRoute: typeof KolichkaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/poruchaj': {
       id: '/poruchaj'
       path: '/poruchaj'
@@ -65,12 +145,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PoruchajRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prosledi-poruchka': {
+      id: '/prosledi-poruchka'
+      path: '/prosledi-poruchka'
+      fullPath: '/prosledi-poruchka'
+      preLoaderRoute: typeof ProslediPoruchkaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BlagodarimRoute: BlagodarimRoute,
+  CheckoutRoute: CheckoutRoute,
+  KolichkaRoute: KolichkaRoute,
   PoruchajRoute: PoruchajRoute,
+  ProslediPoruchkaRoute: ProslediPoruchkaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
