@@ -10,33 +10,245 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BiskvitkiRouteImport } from './routes/biskvitki'
+import { Route as BlagodarimRouteImport } from './routes/blagodarim'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as DostavkaIPlashtaneRouteImport } from './routes/dostavka-i-plashtane'
+import { Route as KakRabotiRouteImport } from './routes/kak-raboti'
+import { Route as KolichkaRouteImport } from './routes/kolichka'
+import { Route as KontaktiRouteImport } from './routes/kontakti'
+import { Route as KorporativniPodaraciRouteImport } from './routes/korporativni-podaraci'
+import { Route as ObshtiUsloviaRouteImport } from './routes/obshti-uslovia'
+import { Route as PoruchajRouteImport } from './routes/poruchaj'
+import { Route as PoveritelnostRouteImport } from './routes/poveritelnost'
+import { Route as PovodiRouteImport } from './routes/povodi'
+import { Route as ProslediPoruchkaRouteImport } from './routes/prosledi-poruchka'
+import { Route as ReklamaciiRouteImport } from './routes/reklamacii'
+import { Route as VaprosiRouteImport } from './routes/vaprosi'
+import { Route as ZaNasRouteImport } from './routes/za-nas'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BiskvitkiRoute = BiskvitkiRouteImport.update({
+  id: '/biskvitki',
+  path: '/biskvitki',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlagodarimRoute = BlagodarimRouteImport.update({
+  id: '/blagodarim',
+  path: '/blagodarim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DostavkaIPlashtaneRoute = DostavkaIPlashtaneRouteImport.update({
+  id: '/dostavka-i-plashtane',
+  path: '/dostavka-i-plashtane',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KakRabotiRoute = KakRabotiRouteImport.update({
+  id: '/kak-raboti',
+  path: '/kak-raboti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KolichkaRoute = KolichkaRouteImport.update({
+  id: '/kolichka',
+  path: '/kolichka',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontaktiRoute = KontaktiRouteImport.update({
+  id: '/kontakti',
+  path: '/kontakti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KorporativniPodaraciRoute = KorporativniPodaraciRouteImport.update({
+  id: '/korporativni-podaraci',
+  path: '/korporativni-podaraci',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ObshtiUsloviaRoute = ObshtiUsloviaRouteImport.update({
+  id: '/obshti-uslovia',
+  path: '/obshti-uslovia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoruchajRoute = PoruchajRouteImport.update({
+  id: '/poruchaj',
+  path: '/poruchaj',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoveritelnostRoute = PoveritelnostRouteImport.update({
+  id: '/poveritelnost',
+  path: '/poveritelnost',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PovodiRoute = PovodiRouteImport.update({
+  id: '/povodi',
+  path: '/povodi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProslediPoruchkaRoute = ProslediPoruchkaRouteImport.update({
+  id: '/prosledi-poruchka',
+  path: '/prosledi-poruchka',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReklamaciiRoute = ReklamaciiRouteImport.update({
+  id: '/reklamacii',
+  path: '/reklamacii',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VaprosiRoute = VaprosiRouteImport.update({
+  id: '/vaprosi',
+  path: '/vaprosi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZaNasRoute = ZaNasRouteImport.update({
+  id: '/za-nas',
+  path: '/za-nas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/biskvitki': typeof BiskvitkiRoute
+  '/blagodarim': typeof BlagodarimRoute
+  '/checkout': typeof CheckoutRoute
+  '/dostavka-i-plashtane': typeof DostavkaIPlashtaneRoute
+  '/kak-raboti': typeof KakRabotiRoute
+  '/kolichka': typeof KolichkaRoute
+  '/kontakti': typeof KontaktiRoute
+  '/korporativni-podaraci': typeof KorporativniPodaraciRoute
+  '/obshti-uslovia': typeof ObshtiUsloviaRoute
+  '/poruchaj': typeof PoruchajRoute
+  '/poveritelnost': typeof PoveritelnostRoute
+  '/povodi': typeof PovodiRoute
+  '/prosledi-poruchka': typeof ProslediPoruchkaRoute
+  '/reklamacii': typeof ReklamaciiRoute
+  '/vaprosi': typeof VaprosiRoute
+  '/za-nas': typeof ZaNasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/biskvitki': typeof BiskvitkiRoute
+  '/blagodarim': typeof BlagodarimRoute
+  '/checkout': typeof CheckoutRoute
+  '/dostavka-i-plashtane': typeof DostavkaIPlashtaneRoute
+  '/kak-raboti': typeof KakRabotiRoute
+  '/kolichka': typeof KolichkaRoute
+  '/kontakti': typeof KontaktiRoute
+  '/korporativni-podaraci': typeof KorporativniPodaraciRoute
+  '/obshti-uslovia': typeof ObshtiUsloviaRoute
+  '/poruchaj': typeof PoruchajRoute
+  '/poveritelnost': typeof PoveritelnostRoute
+  '/povodi': typeof PovodiRoute
+  '/prosledi-poruchka': typeof ProslediPoruchkaRoute
+  '/reklamacii': typeof ReklamaciiRoute
+  '/vaprosi': typeof VaprosiRoute
+  '/za-nas': typeof ZaNasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/biskvitki': typeof BiskvitkiRoute
+  '/blagodarim': typeof BlagodarimRoute
+  '/checkout': typeof CheckoutRoute
+  '/dostavka-i-plashtane': typeof DostavkaIPlashtaneRoute
+  '/kak-raboti': typeof KakRabotiRoute
+  '/kolichka': typeof KolichkaRoute
+  '/kontakti': typeof KontaktiRoute
+  '/korporativni-podaraci': typeof KorporativniPodaraciRoute
+  '/obshti-uslovia': typeof ObshtiUsloviaRoute
+  '/poruchaj': typeof PoruchajRoute
+  '/poveritelnost': typeof PoveritelnostRoute
+  '/povodi': typeof PovodiRoute
+  '/prosledi-poruchka': typeof ProslediPoruchkaRoute
+  '/reklamacii': typeof ReklamaciiRoute
+  '/vaprosi': typeof VaprosiRoute
+  '/za-nas': typeof ZaNasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/biskvitki'
+    | '/blagodarim'
+    | '/checkout'
+    | '/dostavka-i-plashtane'
+    | '/kak-raboti'
+    | '/kolichka'
+    | '/kontakti'
+    | '/korporativni-podaraci'
+    | '/obshti-uslovia'
+    | '/poruchaj'
+    | '/poveritelnost'
+    | '/povodi'
+    | '/prosledi-poruchka'
+    | '/reklamacii'
+    | '/vaprosi'
+    | '/za-nas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/biskvitki'
+    | '/blagodarim'
+    | '/checkout'
+    | '/dostavka-i-plashtane'
+    | '/kak-raboti'
+    | '/kolichka'
+    | '/kontakti'
+    | '/korporativni-podaraci'
+    | '/obshti-uslovia'
+    | '/poruchaj'
+    | '/poveritelnost'
+    | '/povodi'
+    | '/prosledi-poruchka'
+    | '/reklamacii'
+    | '/vaprosi'
+    | '/za-nas'
+  id:
+    | '__root__'
+    | '/'
+    | '/biskvitki'
+    | '/blagodarim'
+    | '/checkout'
+    | '/dostavka-i-plashtane'
+    | '/kak-raboti'
+    | '/kolichka'
+    | '/kontakti'
+    | '/korporativni-podaraci'
+    | '/obshti-uslovia'
+    | '/poruchaj'
+    | '/poveritelnost'
+    | '/povodi'
+    | '/prosledi-poruchka'
+    | '/reklamacii'
+    | '/vaprosi'
+    | '/za-nas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BiskvitkiRoute: typeof BiskvitkiRoute
+  BlagodarimRoute: typeof BlagodarimRoute
+  CheckoutRoute: typeof CheckoutRoute
+  DostavkaIPlashtaneRoute: typeof DostavkaIPlashtaneRoute
+  KakRabotiRoute: typeof KakRabotiRoute
+  KolichkaRoute: typeof KolichkaRoute
+  KontaktiRoute: typeof KontaktiRoute
+  KorporativniPodaraciRoute: typeof KorporativniPodaraciRoute
+  ObshtiUsloviaRoute: typeof ObshtiUsloviaRoute
+  PoruchajRoute: typeof PoruchajRoute
+  PoveritelnostRoute: typeof PoveritelnostRoute
+  PovodiRoute: typeof PovodiRoute
+  ProslediPoruchkaRoute: typeof ProslediPoruchkaRoute
+  ReklamaciiRoute: typeof ReklamaciiRoute
+  VaprosiRoute: typeof VaprosiRoute
+  ZaNasRoute: typeof ZaNasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +260,140 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/biskvitki': {
+      id: '/biskvitki'
+      path: '/biskvitki'
+      fullPath: '/biskvitki'
+      preLoaderRoute: typeof BiskvitkiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blagodarim': {
+      id: '/blagodarim'
+      path: '/blagodarim'
+      fullPath: '/blagodarim'
+      preLoaderRoute: typeof BlagodarimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dostavka-i-plashtane': {
+      id: '/dostavka-i-plashtane'
+      path: '/dostavka-i-plashtane'
+      fullPath: '/dostavka-i-plashtane'
+      preLoaderRoute: typeof DostavkaIPlashtaneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kak-raboti': {
+      id: '/kak-raboti'
+      path: '/kak-raboti'
+      fullPath: '/kak-raboti'
+      preLoaderRoute: typeof KakRabotiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kolichka': {
+      id: '/kolichka'
+      path: '/kolichka'
+      fullPath: '/kolichka'
+      preLoaderRoute: typeof KolichkaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kontakti': {
+      id: '/kontakti'
+      path: '/kontakti'
+      fullPath: '/kontakti'
+      preLoaderRoute: typeof KontaktiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/korporativni-podaraci': {
+      id: '/korporativni-podaraci'
+      path: '/korporativni-podaraci'
+      fullPath: '/korporativni-podaraci'
+      preLoaderRoute: typeof KorporativniPodaraciRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/obshti-uslovia': {
+      id: '/obshti-uslovia'
+      path: '/obshti-uslovia'
+      fullPath: '/obshti-uslovia'
+      preLoaderRoute: typeof ObshtiUsloviaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/poruchaj': {
+      id: '/poruchaj'
+      path: '/poruchaj'
+      fullPath: '/poruchaj'
+      preLoaderRoute: typeof PoruchajRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/poveritelnost': {
+      id: '/poveritelnost'
+      path: '/poveritelnost'
+      fullPath: '/poveritelnost'
+      preLoaderRoute: typeof PoveritelnostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/povodi': {
+      id: '/povodi'
+      path: '/povodi'
+      fullPath: '/povodi'
+      preLoaderRoute: typeof PovodiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prosledi-poruchka': {
+      id: '/prosledi-poruchka'
+      path: '/prosledi-poruchka'
+      fullPath: '/prosledi-poruchka'
+      preLoaderRoute: typeof ProslediPoruchkaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reklamacii': {
+      id: '/reklamacii'
+      path: '/reklamacii'
+      fullPath: '/reklamacii'
+      preLoaderRoute: typeof ReklamaciiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vaprosi': {
+      id: '/vaprosi'
+      path: '/vaprosi'
+      fullPath: '/vaprosi'
+      preLoaderRoute: typeof VaprosiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/za-nas': {
+      id: '/za-nas'
+      path: '/za-nas'
+      fullPath: '/za-nas'
+      preLoaderRoute: typeof ZaNasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BiskvitkiRoute: BiskvitkiRoute,
+  BlagodarimRoute: BlagodarimRoute,
+  CheckoutRoute: CheckoutRoute,
+  DostavkaIPlashtaneRoute: DostavkaIPlashtaneRoute,
+  KakRabotiRoute: KakRabotiRoute,
+  KolichkaRoute: KolichkaRoute,
+  KontaktiRoute: KontaktiRoute,
+  KorporativniPodaraciRoute: KorporativniPodaraciRoute,
+  ObshtiUsloviaRoute: ObshtiUsloviaRoute,
+  PoruchajRoute: PoruchajRoute,
+  PoveritelnostRoute: PoveritelnostRoute,
+  PovodiRoute: PovodiRoute,
+  ProslediPoruchkaRoute: ProslediPoruchkaRoute,
+  ReklamaciiRoute: ReklamaciiRoute,
+  VaprosiRoute: VaprosiRoute,
+  ZaNasRoute: ZaNasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

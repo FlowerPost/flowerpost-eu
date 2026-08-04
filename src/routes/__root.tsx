@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -11,22 +12,35 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { CartProvider } from "@/lib/cart";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { CookieBanner } from "@/components/CookieBanner";
+import { Toaster } from "@/components/ui/sonner";
+import { BRAND } from "@/lib/config";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[70vh] items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <p className="eyebrow">404</p>
+        <h1 className="display-lg mt-4 text-foreground">Тази страница я няма</h1>
+        <hr className="gold-rule mx-auto mt-6" />
+        <p className="mt-6 text-sm text-muted-foreground">
+          Възможно е връзката да е стара или адресът да е сгрешен.
         </p>
-        <div className="mt-6">
+        <div className="mt-8 flex justify-center gap-3">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center bg-primary px-6 py-3 text-sm tracking-wide text-primary-foreground transition-opacity hover:opacity-90"
           >
-            Go home
+            Към началото
+          </Link>
+          <Link
+            to="/poruchaj"
+            className="inline-flex items-center justify-center border border-input px-6 py-3 text-sm tracking-wide transition-colors hover:bg-accent"
+          >
+            Поръчай кутия
           </Link>
         </div>
       </div>
@@ -42,29 +56,27 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[70vh] items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <h1 className="display-md text-foreground">Страницата не се зареди</h1>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Нещо се обърка при нас. Опитай отново или се върни към началото.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center bg-primary px-6 py-3 text-sm tracking-wide text-primary-foreground transition-opacity hover:opacity-90"
           >
-            Try again
+            Опитай отново
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex items-center justify-center border border-input px-6 py-3 text-sm tracking-wide transition-colors hover:bg-accent"
           >
-            Go home
+            Към началото
           </a>
         </div>
       </div>
@@ -77,21 +89,41 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: `${BRAND.name} — подаръчна кутия с рози` },
+      {
+        name: "description",
+        content:
+          "FLOWERPOST Signature Box — премиум подаръчна кутия със свежи рози и ръчно изписана картичка. Доставка в София и цялата страна.",
+      },
+      { name: "author", content: BRAND.name },
+      { property: "og:site_name", content: BRAND.name },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "bg_BG" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "theme-color", content: "#fbf8f2" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: BRAND.name,
+          url: `https://${BRAND.domain}`,
+          email: BRAND.email,
+          address: { "@type": "PostalAddress", addressLocality: "София", addressCountry: "BG" },
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -102,7 +134,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="bg">
       <head>
         <HeadContent />
       </head>
@@ -116,11 +148,23 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const bare = pathname.startsWith("/admin") || pathname.startsWith("/vhod");
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <CartProvider>
+        <div className="flex min-h-screen flex-col">
+          {!bare && <Header />}
+          <main className="flex-1">
+            {/* Required: nested routes render here. */}
+            <Outlet />
+          </main>
+          {!bare && <Footer />}
+        </div>
+        {!bare && <CookieBanner />}
+        <Toaster position="top-center" />
+      </CartProvider>
     </QueryClientProvider>
   );
 }
