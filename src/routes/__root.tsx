@@ -93,7 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "FLOWERPOST Signature Box — премиум подаръчна кутия със свежи рози и ръчно изписана картичка. Доставка в София и цялата страна.",
+          "Премиум подаръчна кутия със свежи рози, персонализирано послание и ръчно изписано име. Безплатна доставка в София, куриер за цялата страна.",
       },
       { name: "author", content: BRAND.name },
       { property: "og:site_name", content: BRAND.name },
@@ -101,6 +101,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:locale", content: "bg_BG" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#fbf8f2" },
+      { title: "FLOWERPOST — подаръчна кутия с рози и ръчно изписана картичка" },
+      { property: "og:title", content: "FLOWERPOST — подаръчна кутия с рози и ръчно изписана картичка" },
+      { name: "twitter:title", content: "FLOWERPOST — подаръчна кутия с рози и ръчно изписана картичка" },
+      { property: "og:description", content: "Премиум подаръчна кутия със свежи рози, персонализирано послание и ръчно изписано име. Безплатна доставка в София, куриер за цялата страна." },
+      { name: "twitter:description", content: "Премиум подаръчна кутия със свежи рози, персонализирано послание и ръчно изписано име. Безплатна доставка в София, куриер за цялата страна." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/5TYqoKmG57O885wTcxRiP1sDZGD3/social-images/social-1785869855579-social-image.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/5TYqoKmG57O885wTcxRiP1sDZGD3/social-images/social-1785869855579-social-image.webp" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
