@@ -68,8 +68,10 @@ export const getShopData = createServerFn({ method: "GET" }).handler(async () =>
       code: c.code,
       name: c.name_bg,
       hex: c.hex,
-      available: c.is_available && c.stock_roses > 0,
+      stockRoses: c.stock_roses,
+      isAvailable: c.is_available && c.stock_roses > 0,
     })),
+
     pricing,
     delivery,
     company: (settings["company"] ?? {}) as Record<string, string>,
