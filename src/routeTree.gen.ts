@@ -16,11 +16,15 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as DostavkaIPlashtaneRouteImport } from './routes/dostavka-i-plashtane'
 import { Route as KakRabotiRouteImport } from './routes/kak-raboti'
 import { Route as KolichkaRouteImport } from './routes/kolichka'
+import { Route as KontaktiRouteImport } from './routes/kontakti'
+import { Route as KorporativniPodaraciRouteImport } from './routes/korporativni-podaraci'
 import { Route as ObshtiUsloviaRouteImport } from './routes/obshti-uslovia'
 import { Route as PoruchajRouteImport } from './routes/poruchaj'
 import { Route as PoveritelnostRouteImport } from './routes/poveritelnost'
+import { Route as PovodiRouteImport } from './routes/povodi'
 import { Route as ProslediPoruchkaRouteImport } from './routes/prosledi-poruchka'
 import { Route as ReklamaciiRouteImport } from './routes/reklamacii'
+import { Route as VaprosiRouteImport } from './routes/vaprosi'
 import { Route as ZaNasRouteImport } from './routes/za-nas'
 
 const IndexRoute = IndexRouteImport.update({
@@ -58,6 +62,16 @@ const KolichkaRoute = KolichkaRouteImport.update({
   path: '/kolichka',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KontaktiRoute = KontaktiRouteImport.update({
+  id: '/kontakti',
+  path: '/kontakti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KorporativniPodaraciRoute = KorporativniPodaraciRouteImport.update({
+  id: '/korporativni-podaraci',
+  path: '/korporativni-podaraci',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ObshtiUsloviaRoute = ObshtiUsloviaRouteImport.update({
   id: '/obshti-uslovia',
   path: '/obshti-uslovia',
@@ -73,6 +87,11 @@ const PoveritelnostRoute = PoveritelnostRouteImport.update({
   path: '/poveritelnost',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PovodiRoute = PovodiRouteImport.update({
+  id: '/povodi',
+  path: '/povodi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProslediPoruchkaRoute = ProslediPoruchkaRouteImport.update({
   id: '/prosledi-poruchka',
   path: '/prosledi-poruchka',
@@ -81,6 +100,11 @@ const ProslediPoruchkaRoute = ProslediPoruchkaRouteImport.update({
 const ReklamaciiRoute = ReklamaciiRouteImport.update({
   id: '/reklamacii',
   path: '/reklamacii',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VaprosiRoute = VaprosiRouteImport.update({
+  id: '/vaprosi',
+  path: '/vaprosi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ZaNasRoute = ZaNasRouteImport.update({
@@ -97,11 +121,15 @@ export interface FileRoutesByFullPath {
   '/dostavka-i-plashtane': typeof DostavkaIPlashtaneRoute
   '/kak-raboti': typeof KakRabotiRoute
   '/kolichka': typeof KolichkaRoute
+  '/kontakti': typeof KontaktiRoute
+  '/korporativni-podaraci': typeof KorporativniPodaraciRoute
   '/obshti-uslovia': typeof ObshtiUsloviaRoute
   '/poruchaj': typeof PoruchajRoute
   '/poveritelnost': typeof PoveritelnostRoute
+  '/povodi': typeof PovodiRoute
   '/prosledi-poruchka': typeof ProslediPoruchkaRoute
   '/reklamacii': typeof ReklamaciiRoute
+  '/vaprosi': typeof VaprosiRoute
   '/za-nas': typeof ZaNasRoute
 }
 export interface FileRoutesByTo {
@@ -112,11 +140,15 @@ export interface FileRoutesByTo {
   '/dostavka-i-plashtane': typeof DostavkaIPlashtaneRoute
   '/kak-raboti': typeof KakRabotiRoute
   '/kolichka': typeof KolichkaRoute
+  '/kontakti': typeof KontaktiRoute
+  '/korporativni-podaraci': typeof KorporativniPodaraciRoute
   '/obshti-uslovia': typeof ObshtiUsloviaRoute
   '/poruchaj': typeof PoruchajRoute
   '/poveritelnost': typeof PoveritelnostRoute
+  '/povodi': typeof PovodiRoute
   '/prosledi-poruchka': typeof ProslediPoruchkaRoute
   '/reklamacii': typeof ReklamaciiRoute
+  '/vaprosi': typeof VaprosiRoute
   '/za-nas': typeof ZaNasRoute
 }
 export interface FileRoutesById {
@@ -128,11 +160,15 @@ export interface FileRoutesById {
   '/dostavka-i-plashtane': typeof DostavkaIPlashtaneRoute
   '/kak-raboti': typeof KakRabotiRoute
   '/kolichka': typeof KolichkaRoute
+  '/kontakti': typeof KontaktiRoute
+  '/korporativni-podaraci': typeof KorporativniPodaraciRoute
   '/obshti-uslovia': typeof ObshtiUsloviaRoute
   '/poruchaj': typeof PoruchajRoute
   '/poveritelnost': typeof PoveritelnostRoute
+  '/povodi': typeof PovodiRoute
   '/prosledi-poruchka': typeof ProslediPoruchkaRoute
   '/reklamacii': typeof ReklamaciiRoute
+  '/vaprosi': typeof VaprosiRoute
   '/za-nas': typeof ZaNasRoute
 }
 export interface FileRouteTypes {
@@ -145,11 +181,15 @@ export interface FileRouteTypes {
     | '/dostavka-i-plashtane'
     | '/kak-raboti'
     | '/kolichka'
+    | '/kontakti'
+    | '/korporativni-podaraci'
     | '/obshti-uslovia'
     | '/poruchaj'
     | '/poveritelnost'
+    | '/povodi'
     | '/prosledi-poruchka'
     | '/reklamacii'
+    | '/vaprosi'
     | '/za-nas'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -160,11 +200,15 @@ export interface FileRouteTypes {
     | '/dostavka-i-plashtane'
     | '/kak-raboti'
     | '/kolichka'
+    | '/kontakti'
+    | '/korporativni-podaraci'
     | '/obshti-uslovia'
     | '/poruchaj'
     | '/poveritelnost'
+    | '/povodi'
     | '/prosledi-poruchka'
     | '/reklamacii'
+    | '/vaprosi'
     | '/za-nas'
   id:
     | '__root__'
@@ -175,11 +219,15 @@ export interface FileRouteTypes {
     | '/dostavka-i-plashtane'
     | '/kak-raboti'
     | '/kolichka'
+    | '/kontakti'
+    | '/korporativni-podaraci'
     | '/obshti-uslovia'
     | '/poruchaj'
     | '/poveritelnost'
+    | '/povodi'
     | '/prosledi-poruchka'
     | '/reklamacii'
+    | '/vaprosi'
     | '/za-nas'
   fileRoutesById: FileRoutesById
 }
@@ -191,11 +239,15 @@ export interface RootRouteChildren {
   DostavkaIPlashtaneRoute: typeof DostavkaIPlashtaneRoute
   KakRabotiRoute: typeof KakRabotiRoute
   KolichkaRoute: typeof KolichkaRoute
+  KontaktiRoute: typeof KontaktiRoute
+  KorporativniPodaraciRoute: typeof KorporativniPodaraciRoute
   ObshtiUsloviaRoute: typeof ObshtiUsloviaRoute
   PoruchajRoute: typeof PoruchajRoute
   PoveritelnostRoute: typeof PoveritelnostRoute
+  PovodiRoute: typeof PovodiRoute
   ProslediPoruchkaRoute: typeof ProslediPoruchkaRoute
   ReklamaciiRoute: typeof ReklamaciiRoute
+  VaprosiRoute: typeof VaprosiRoute
   ZaNasRoute: typeof ZaNasRoute
 }
 
@@ -250,6 +302,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KolichkaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kontakti': {
+      id: '/kontakti'
+      path: '/kontakti'
+      fullPath: '/kontakti'
+      preLoaderRoute: typeof KontaktiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/korporativni-podaraci': {
+      id: '/korporativni-podaraci'
+      path: '/korporativni-podaraci'
+      fullPath: '/korporativni-podaraci'
+      preLoaderRoute: typeof KorporativniPodaraciRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/obshti-uslovia': {
       id: '/obshti-uslovia'
       path: '/obshti-uslovia'
@@ -271,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PoveritelnostRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/povodi': {
+      id: '/povodi'
+      path: '/povodi'
+      fullPath: '/povodi'
+      preLoaderRoute: typeof PovodiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prosledi-poruchka': {
       id: '/prosledi-poruchka'
       path: '/prosledi-poruchka'
@@ -283,6 +356,13 @@ declare module '@tanstack/react-router' {
       path: '/reklamacii'
       fullPath: '/reklamacii'
       preLoaderRoute: typeof ReklamaciiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vaprosi': {
+      id: '/vaprosi'
+      path: '/vaprosi'
+      fullPath: '/vaprosi'
+      preLoaderRoute: typeof VaprosiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/za-nas': {
@@ -303,11 +383,15 @@ const rootRouteChildren: RootRouteChildren = {
   DostavkaIPlashtaneRoute: DostavkaIPlashtaneRoute,
   KakRabotiRoute: KakRabotiRoute,
   KolichkaRoute: KolichkaRoute,
+  KontaktiRoute: KontaktiRoute,
+  KorporativniPodaraciRoute: KorporativniPodaraciRoute,
   ObshtiUsloviaRoute: ObshtiUsloviaRoute,
   PoruchajRoute: PoruchajRoute,
   PoveritelnostRoute: PoveritelnostRoute,
+  PovodiRoute: PovodiRoute,
   ProslediPoruchkaRoute: ProslediPoruchkaRoute,
   ReklamaciiRoute: ReklamaciiRoute,
+  VaprosiRoute: VaprosiRoute,
   ZaNasRoute: ZaNasRoute,
 }
 export const routeTree = rootRouteImport
