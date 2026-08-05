@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react";
 import boxClosedImg from "@/assets/box-closed.jpg";
 import rosesImg from "@/assets/roses-closeup.jpg";
 import cardImg from "@/assets/card-detail.jpg";
+import heroVideo from "@/assets/hero-3d.mp4.asset.json";
+import heroPoster from "@/assets/hero-3d-poster.png.asset.json";
 import { BOX_CONTENTS, BRAND, OCCASIONS } from "@/lib/config";
 import { formatPrice, roseBoxPriceCents } from "@/lib/pricing";
 import { shopDataQuery } from "@/lib/shop-queries";
@@ -93,10 +95,11 @@ function Home() {
                 muted
                 loop
                 playsInline
-                poster="/hero-p1.webp"
-                className="h-full w-full object-cover aspect-[1600/1104]"
+                preload="metadata"
+                poster={heroPoster.url}
+                className="h-full w-full object-cover aspect-[4/3]"
               >
-                <source src="/hero-v1.mp4" type="video/mp4" />
+                <source src={heroVideo.url} type="video/mp4" />
               </video>
             </div>
           </div>
