@@ -101,31 +101,71 @@ function CorporatePage() {
               )}
               <div>
                 <Label htmlFor="cname">Име</Label>
-                <Input id="cname" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="cname"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div>
                 <Label htmlFor="company">Компания</Label>
-                <Input id="company" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="company"
+                  value={form.company}
+                  onChange={(e) => setForm({ ...form, company: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div>
                 <Label htmlFor="cemail">Служебен имейл</Label>
-                <Input id="cemail" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="cemail"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div>
                 <Label htmlFor="cphone">Телефон (по желание)</Label>
-                <Input id="cphone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="cphone"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div>
                 <Label htmlFor="boxCount">Приблизителен брой кутии</Label>
-                <Input id="boxCount" type="number" min={1} value={form.boxCount} onChange={(e) => setForm({ ...form, boxCount: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="boxCount"
+                  type="number"
+                  min={1}
+                  value={form.boxCount}
+                  onChange={(e) => setForm({ ...form, boxCount: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div>
                 <Label htmlFor="targetDate">Желана дата (по желание)</Label>
-                <Input id="targetDate" type="date" value={form.targetDate} onChange={(e) => setForm({ ...form, targetDate: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="targetDate"
+                  type="date"
+                  value={form.targetDate}
+                  onChange={(e) => setForm({ ...form, targetDate: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="cmessage">Детайли по запитването</Label>
-                <Textarea id="cmessage" rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="mt-2 rounded-none" />
+                <Textarea
+                  id="cmessage"
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div className="sm:col-span-2">
                 <Button type="submit" size="lg" className="rounded-none px-8" disabled={loading}>

@@ -61,16 +61,13 @@ function ThankYou() {
         <h1 className="display-lg mt-4">Благодарим.</h1>
         <hr className="gold-rule mt-6" />
         <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-          Номерът на твоята поръчка е{" "}
-          <strong className="text-foreground">{order}</strong>. Запази го — с него можеш да
-          проследиш статуса по всяко време.
+          Номерът на твоята поръчка е <strong className="text-foreground">{order}</strong>. Запази
+          го — с него можеш да проследиш статуса по всяко време.
         </p>
 
         {isPending && <p className="mt-8 text-sm text-muted-foreground">Зареждане…</p>}
 
-        {data && !data.ok && (
-          <p className="mt-8 text-sm text-destructive">{data.error}</p>
-        )}
+        {data && !data.ok && <p className="mt-8 text-sm text-destructive">{data.error}</p>}
 
         {data && data.ok && (
           <>

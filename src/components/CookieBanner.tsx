@@ -38,10 +38,20 @@ export function CookieBanner() {
             .
           </p>
           <div className="flex shrink-0 flex-wrap gap-2">
-            <Button variant="ghost" size="sm" className="rounded-none" onClick={() => setDetails((v) => !v)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-none"
+              onClick={() => setDetails((v) => !v)}
+            >
               Настройки
             </Button>
-            <Button variant="outline" size="sm" className="rounded-none" onClick={() => decide(false, false)}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-none"
+              onClick={() => decide(false, false)}
+            >
               Само необходими
             </Button>
             <Button size="sm" className="rounded-none" onClick={() => decide(true, true)}>

@@ -52,7 +52,9 @@ function FaqPage() {
         <Accordion type="single" collapsible className="w-full">
           {FAQ_ITEMS.map((item, i) => (
             <AccordionItem key={i} value={`item-${i}`}>
-              <AccordionTrigger className="text-left font-display text-lg">{item.q}</AccordionTrigger>
+              <AccordionTrigger className="text-left font-display text-lg">
+                {item.q}
+              </AccordionTrigger>
               <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
                 {item.a}
               </AccordionContent>

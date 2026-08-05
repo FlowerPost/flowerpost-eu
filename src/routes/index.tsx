@@ -25,10 +25,14 @@ export const Route = createFileRoute("/")({
         content:
           "Премиум подаръчна кутия със свежи рози, персонализирано послание и ръчно изписано име. Безплатна доставка в София, куриер за цялата страна.",
       },
-      { property: "og:title", content: "FLOWERPOST — подаръчна кутия с рози и ръчно изписана картичка" },
+      {
+        property: "og:title",
+        content: "FLOWERPOST — подаръчна кутия с рози и ръчно изписана картичка",
+      },
       {
         property: "og:description",
-        content: "Премиум подаръчна кутия със свежи рози, персонализирано послание и ръчно изписано име. Безплатна доставка в София, куриер за цялата страна.",
+        content:
+          "Премиум подаръчна кутия със свежи рози, персонализирано послание и ръчно изписано име. Безплатна доставка в София, куриер за цялата страна.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -89,7 +93,12 @@ function Home() {
                   <ArrowRight className="ml-1 h-4 w-4" strokeWidth={1.5} />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-none px-8 tracking-wide">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-none px-8 tracking-wide"
+              >
                 <Link to="/kak-raboti">Как работи</Link>
               </Button>
             </div>
@@ -249,9 +258,7 @@ function Home() {
         <div className="container-fp flex flex-col items-start gap-6 py-16 md:flex-row md:items-center md:justify-between md:py-20">
           <div>
             <h2 className="display-md">Изпрати нещо, което се помни.</h2>
-            <p className="mt-3 text-sm opacity-80">
-              {BRAND.tagline} · Безплатна доставка в София.
-            </p>
+            <p className="mt-3 text-sm opacity-80">{BRAND.tagline} · Безплатна доставка в София.</p>
           </div>
           <Button asChild size="lg" variant="secondary" className="rounded-none px-8 tracking-wide">
             <Link to="/poruchaj">Поръчай сега</Link>

@@ -118,7 +118,8 @@ function Configurator() {
     }
     if (current === 2) {
       if (recipientName.trim().length < 2) e.push("Въведи име на получателя.");
-      if (!/^[+0-9 ()-]{6,20}$/.test(recipientPhone.trim())) e.push("Въведи валиден телефон на получателя.");
+      if (!/^[+0-9 ()-]{6,20}$/.test(recipientPhone.trim()))
+        e.push("Въведи валиден телефон на получателя.");
       if (city.trim().length < 2) e.push("Въведи населено място.");
       if (streetAddress.trim().length < 4) e.push("Въведи адрес за доставка.");
       if (!deliveryDate) e.push("Избери дата за доставка.");
@@ -218,7 +219,9 @@ function Configurator() {
             >
               {i < step ? <Check className="h-3 w-3" strokeWidth={2.5} /> : i + 1}
             </span>
-            <span className={i === step ? "text-foreground" : "text-muted-foreground"}>{label}</span>
+            <span className={i === step ? "text-foreground" : "text-muted-foreground"}>
+              {label}
+            </span>
           </li>
         ))}
       </ol>
@@ -314,7 +317,9 @@ function Configurator() {
                         if (nextValue && !cardMessage.trim()) setCardMessage(o.suggestion);
                       }}
                       className={`border px-4 py-2 text-sm transition-colors ${
-                        occasion === o.title ? "border-primary bg-accent" : "border-input hover:bg-accent"
+                        occasion === o.title
+                          ? "border-primary bg-accent"
+                          : "border-input hover:bg-accent"
                       }`}
                     >
                       {o.title}
@@ -489,7 +494,9 @@ function Configurator() {
                       type="button"
                       onClick={() => setDeliverySlot(slot)}
                       className={`border px-4 py-2 text-sm transition-colors ${
-                        deliverySlot === slot ? "border-primary bg-accent" : "border-input hover:bg-accent"
+                        deliverySlot === slot
+                          ? "border-primary bg-accent"
+                          : "border-input hover:bg-accent"
                       }`}
                     >
                       {slot}
@@ -555,11 +562,22 @@ function Configurator() {
                   ["Получател", `${recipientName} · ${recipientPhone}`],
                   [
                     "Адрес",
-                    [streetAddress, entrance && `вх. ${entrance}`, floor && `ет. ${floor}`, apartment && `ап. ${apartment}`, city, region, postalCode]
+                    [
+                      streetAddress,
+                      entrance && `вх. ${entrance}`,
+                      floor && `ет. ${floor}`,
+                      apartment && `ап. ${apartment}`,
+                      city,
+                      region,
+                      postalCode,
+                    ]
                       .filter(Boolean)
                       .join(", "),
                   ],
-                  ["Дата", `${formatDateBg(deliveryDate)} · ${deliverySlot || "без предпочитание"}`],
+                  [
+                    "Дата",
+                    `${formatDateBg(deliveryDate)} · ${deliverySlot || "без предпочитание"}`,
+                  ],
                   [
                     "Доставка",
                     deliveryType === "sofia" ? "София — наш представител" : `Куриер ${courier}`,
@@ -613,9 +631,12 @@ function Configurator() {
               className="h-40 w-full object-cover"
             />
             <div className="p-6">
-              <h3 className="font-display text-xl">{product?.name ?? "FLOWERPOST Signature Box"}</h3>
+              <h3 className="font-display text-xl">
+                {product?.name ?? "FLOWERPOST Signature Box"}
+              </h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                {product?.shortDescription ?? "Продълговата кутия с рози и ръчно изписана картичка."}
+                {product?.shortDescription ??
+                  "Продълговата кутия с рози и ръчно изписана картичка."}
               </p>
               <dl className="mt-5 space-y-2 border-t border-border pt-5 text-sm">
                 <div className="flex justify-between">

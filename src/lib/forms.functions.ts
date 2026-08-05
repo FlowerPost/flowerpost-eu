@@ -21,7 +21,8 @@ export const submitContact = createServerFn({ method: "POST" })
       subject: data.subject || null,
       message: data.message,
     });
-    if (error) return { ok: false as const, error: "Съобщението не беше изпратено. Опитай отново." };
+    if (error)
+      return { ok: false as const, error: "Съобщението не беше изпратено. Опитай отново." };
     return OK;
   });
 
@@ -39,7 +40,8 @@ export const submitCorporate = createServerFn({ method: "POST" })
       target_date: data.targetDate || null,
       message: data.message || null,
     });
-    if (error) return { ok: false as const, error: "Запитването не беше изпратено. Опитай отново." };
+    if (error)
+      return { ok: false as const, error: "Запитването не беше изпратено. Опитай отново." };
     return OK;
   });
 
@@ -68,7 +70,8 @@ export const submitComplaint = createServerFn({ method: "POST" })
       desired_resolution: data.desiredResolution || null,
       photo_urls: data.photoUrls ?? [],
     });
-    if (error) return { ok: false as const, error: "Рекламацията не беше изпратена. Опитай отново." };
+    if (error)
+      return { ok: false as const, error: "Рекламацията не беше изпратена. Опитай отново." };
     return OK;
   });
 

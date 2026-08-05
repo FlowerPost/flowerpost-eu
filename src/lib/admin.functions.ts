@@ -28,7 +28,11 @@ export const getDashboard = createServerFn({ method: "GET" })
     const [orders, items, product, colors] = await Promise.all([
       db.from("orders").select("id, status, payment_status, total_cents, created_at"),
       db.from("order_items").select("rose_count, color_name, delivery_date, delivery_status"),
-      db.from("products").select("box_inventory").eq("slug", "flowerpost-signature-box").maybeSingle(),
+      db
+        .from("products")
+        .select("box_inventory")
+        .eq("slug", "flowerpost-signature-box")
+        .maybeSingle(),
       db.from("flower_colors").select("name_bg, stock_roses, is_available").order("sort_order"),
     ]);
 
@@ -43,10 +47,12 @@ export const getDashboard = createServerFn({ method: "GET" })
 
     return {
       ordersToday: allOrders.filter((o) => o.created_at.slice(0, 10) === todayISO).length,
-      deliveriesNext7: allItems.filter((i) => i.delivery_date >= todayISO && i.delivery_date <= in7).length,
+      deliveriesNext7: allItems.filter((i) => i.delivery_date >= todayISO && i.delivery_date <= in7)
+        .length,
       unpaid: allOrders.filter((o) => o.payment_status === "awaiting_payment").length,
       toPrepare: allOrders.filter((o) => ["paid", "confirmed"].includes(o.status)).length,
-      toDeliver: allOrders.filter((o) => ["preparing", "ready", "shipped"].includes(o.status)).length,
+      toDeliver: allOrders.filter((o) => ["preparing", "ready", "shipped"].includes(o.status))
+        .length,
       boxInventory: product.data?.box_inventory ?? 0,
       colors: (colors.data ?? []).map((c) => ({
         name: c.name_bg,
@@ -146,7 +152,6 @@ export const updateOrder = createServerFn({ method: "POST" })
 
     if (Object.keys(patch).length > 0) {
       await db.from("orders").update(patch).eq("id", data.orderId);
-
     }
 
     if (data.status) {
@@ -293,10 +298,22 @@ export const getRequests = createServerFn({ method: "GET" })
     const db = await assertAdmin(context.userId);
     const [contact, corporate, newsletter, complaints, stock] = await Promise.all([
       db.from("contact_requests").select("*").order("created_at", { ascending: false }).limit(100),
-      db.from("corporate_requests").select("*").order("created_at", { ascending: false }).limit(100),
-      db.from("newsletter_subscribers").select("*").order("created_at", { ascending: false }).limit(200),
+      db
+        .from("corporate_requests")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(100),
+      db
+        .from("newsletter_subscribers")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(200),
       db.from("complaints").select("*").order("created_at", { ascending: false }).limit(100),
-      db.from("stock_notifications").select("*").order("created_at", { ascending: false }).limit(200),
+      db
+        .from("stock_notifications")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(200),
     ]);
     return {
       contact: contact.data ?? [],

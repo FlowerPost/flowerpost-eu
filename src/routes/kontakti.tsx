@@ -86,23 +86,50 @@ function ContactPage() {
               )}
               <div>
                 <Label htmlFor="name">Име</Label>
-                <Input id="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="name"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div>
                 <Label htmlFor="email">Имейл</Label>
-                <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div>
                 <Label htmlFor="phone">Телефон (по желание)</Label>
-                <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="phone"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div>
                 <Label htmlFor="subject">Тема (по желание)</Label>
-                <Input id="subject" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} className="mt-2 rounded-none" />
+                <Input
+                  id="subject"
+                  value={form.subject}
+                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="message">Съобщение</Label>
-                <Textarea id="message" rows={6} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="mt-2 rounded-none" />
+                <Textarea
+                  id="message"
+                  rows={6}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  className="mt-2 rounded-none"
+                />
               </div>
               <div className="sm:col-span-2">
                 <Button type="submit" size="lg" className="rounded-none px-8" disabled={loading}>
