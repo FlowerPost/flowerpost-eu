@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import boxClosedImg from "@/assets/box-closed.jpg";
 import rosesImg from "@/assets/roses-closeup.jpg";
@@ -42,29 +42,53 @@ function Home() {
   const pricing = data.pricing;
   const inventory = data.product?.boxInventory ?? 0;
   const soldOut = inventory <= 0 || data.product?.isActive === false;
+  const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     track("view_product", { product: "flowerpost-signature-box" });
   }, []);
 
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el || typeof window === "undefined") return;
+
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const y = window.scrollY ?? window.pageYOffset;
+        el.style.setProperty("--hero-parallax", String(y * 0.04));
+      });
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   return (
     <>
       {/* Hero */}
-      <section className="hero-veil relative overflow-hidden">
+      <section ref={heroRef} className="hero-veil relative overflow-hidden">
         <div className="container-fp grid items-center gap-12 py-14 md:grid-cols-12 md:gap-16 md:py-24">
           <div className="order-1 hero-stage md:col-span-7">
             <div className="hero-portal aspect-[4/3] w-full">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={heroPoster.url}
-                className="hero-slow-zoom h-full w-full object-cover"
-              >
-                <source src={heroVideo.url} type="video/mp4" />
-              </video>
+              <div className="hero-video-reveal h-full w-full">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={heroPoster.url}
+                  className="hero-slow-zoom h-full w-full object-cover"
+                >
+                  <source src={heroVideo.url} type="video/mp4" />
+                </video>
+              </div>
               <span className="hero-portal-rim" aria-hidden="true" />
             </div>
           </div>
