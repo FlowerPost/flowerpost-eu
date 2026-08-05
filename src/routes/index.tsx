@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
-// heroImg removed in favor of hero-video.mp4
+import heroVideo from "@/assets/hero-video.mp4";
+import heroPoster from "@/assets/hero-poster.webp";
 import boxClosedImg from "@/assets/box-closed.jpg";
 import rosesImg from "@/assets/roses-closeup.jpg";
 import cardImg from "@/assets/card-detail.jpg";
@@ -94,10 +95,10 @@ function Home() {
                 muted
                 loop
                 playsInline
-                poster="/hero-poster.webp"
+                poster={heroPoster}
                 className="h-full w-full object-cover aspect-[1600/1104]"
               >
-                <source src="/hero-video.mp4" type="video/mp4" />
+                <source src={heroVideo} type="video/mp4" />
               </video>
             </div>
           </div>
