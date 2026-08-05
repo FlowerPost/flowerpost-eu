@@ -93,10 +93,11 @@ function Home() {
                 muted
                 loop
                 playsInline
-                poster="/hero-p1.webp"
-                className="h-full w-full object-cover aspect-[1600/1104]"
+                preload="metadata"
+                poster={heroPoster.url}
+                className="h-full w-full object-cover aspect-[4/3]"
               >
-                <source src="/hero-v1.mp4" type="video/mp4" />
+                <source src={heroVideo.url} type="video/mp4" />
               </video>
             </div>
           </div>
