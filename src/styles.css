@@ -321,3 +321,45 @@
   animation: hero-slow-zoom 22s ease-in-out infinite alternate;
   will-change: transform;
 }
+
+/* --- Homepage specific helpers: fade-in, subtle hover, story scroll --- */
+/* Fade-in on scroll for sections */
+.fade-in {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--transition-silk), transform var(--transition-silk);
+}
+.fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Generic fade-in attribute hook (used by data-fade) */
+[data-fade] { opacity: 0; transform: translateY(10px); transition: opacity var(--transition-silk), transform var(--transition-silk); }
+[data-fade].is-visible { opacity: 1; transform: translateY(0); }
+
+/* Subtle image zoom on hover for cards and story items */
+.card-img,
+.story-img {
+  transition: transform var(--transition-silk);
+  will-change: transform;
+}
+.surface-card:hover .card-img,
+.surface-card:hover .story-img {
+  transform: scale(1.04);
+}
+
+/* Story horizontal scroller */
+.story-scroll { -webkit-overflow-scrolling: touch; padding-bottom: 0.5rem; }
+.story-scroll ul { padding: 0; margin: 0; list-style: none; }
+
+/* Gold accent utility (text gradient) */
+.gold-accent { background-image: var(--gradient-gold); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* Ensure headings render crisply */
+.display-xl, .display-lg, .display-md { text-rendering: optimizeLegibility; }
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in, [data-fade], .card-img, .story-img, .surface-card { transition: none !important; animation: none !important; transform: none !important; }
+}
