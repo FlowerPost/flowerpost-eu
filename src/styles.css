@@ -278,7 +278,7 @@
   }
 }
 
-/* --- Hero portal ("дупка" в секцията с 3D перспектива) --- */
+/* --- Hero portal ("дупка" в секцията с 3D перспектива + паралакс) --- */
 @utility hero-stage {
   perspective: 1400px;
   perspective-origin: 50% 45%;
@@ -287,8 +287,12 @@
 @utility hero-portal {
   position: relative;
   transform-style: preserve-3d;
-  transform: rotateX(6deg) rotateY(-7deg) translateZ(0);
-  transition: transform var(--transition-silk);
+  transform:
+    rotateX(6deg)
+    rotateY(-7deg)
+    translateY(calc(var(--hero-parallax, 0) * 1px))
+    translateZ(0);
+  transition: transform 0.1s linear;
   border-radius: 2px;
   overflow: hidden;
   background-color: var(--ink, #14100d);
@@ -297,6 +301,8 @@
     inset 0 30px 60px -20px rgb(0 0 0 / 0.65),
     inset 0 -30px 60px -20px rgb(0 0 0 / 0.5),
     0 40px 80px -40px rgb(0 0 0 / 0.55);
+  animation: hero-portal-reveal 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform;
 }
 
 @utility hero-portal-rim {
@@ -308,16 +314,54 @@
     linear-gradient(180deg, rgb(255 255 255 / 0.07), transparent 35%);
 }
 
-@keyframes hero-slow-zoom {
+@keyframes hero-portal-reveal {
   0% {
-    transform: scale(1.02) translateZ(0);
+    opacity: 0;
+    transform: rotateX(9deg) rotateY(-10deg) scale(0.96) translateY(18px);
   }
   100% {
-    transform: scale(1.18) translateZ(0);
+    opacity: 1;
+    transform: rotateX(6deg) rotateY(-7deg) scale(1) translateY(0);
+  }
+}
+
+@keyframes hero-slow-zoom {
+  0% {
+    transform: scale(1) translateZ(0);
+  }
+  100% {
+    transform: scale(1.14) translateZ(0);
   }
 }
 
 @utility hero-slow-zoom {
-  animation: hero-slow-zoom 22s ease-in-out infinite alternate;
+  animation: hero-slow-zoom 26s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
   will-change: transform;
+}
+
+@keyframes hero-video-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@utility hero-video-reveal {
+  animation: hero-video-reveal 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portal,
+  .hero-slow-zoom,
+  .hero-video-reveal {
+    animation: none !important;
+  }
+  .hero-portal {
+    transform: rotateX(6deg) rotateY(-7deg) translateZ(0);
+  }
 }
