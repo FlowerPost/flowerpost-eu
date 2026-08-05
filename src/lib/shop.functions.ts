@@ -1,7 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { cartItemSchema, checkoutSchema, trackingSchema } from "./validation";
-import { roseBoxPriceCents, shippingCents, type PricingConfig, type DeliveryConfig } from "./pricing";
+import {
+  roseBoxPriceCents,
+  shippingCents,
+  type PricingConfig,
+  type DeliveryConfig,
+} from "./pricing";
 import { PRICING_DEFAULTS, DELIVERY_DEFAULTS } from "./config";
 
 const createOrderSchema = z.object({
@@ -44,10 +49,16 @@ export const getShopData = createServerFn({ method: "GET" }).handler(async () =>
   };
 
   const delivery: DeliveryConfig = {
-    sofiaShippingCents: Number(deliverySetting["sofia_shipping_cents"] ?? DELIVERY_DEFAULTS.sofiaShippingCents),
-    countryShippingCents: Number(deliverySetting["country_shipping_cents"] ?? DELIVERY_DEFAULTS.countryShippingCents),
+    sofiaShippingCents: Number(
+      deliverySetting["sofia_shipping_cents"] ?? DELIVERY_DEFAULTS.sofiaShippingCents,
+    ),
+    countryShippingCents: Number(
+      deliverySetting["country_shipping_cents"] ?? DELIVERY_DEFAULTS.countryShippingCents,
+    ),
     leadTimeDays: Number(deliverySetting["lead_time_days"] ?? DELIVERY_DEFAULTS.leadTimeDays),
-    maxDeliveriesPerDay: Number(deliverySetting["max_deliveries_per_day"] ?? DELIVERY_DEFAULTS.maxDeliveriesPerDay),
+    maxDeliveriesPerDay: Number(
+      deliverySetting["max_deliveries_per_day"] ?? DELIVERY_DEFAULTS.maxDeliveriesPerDay,
+    ),
     slots: (deliverySetting["slots"] as string[] | undefined) ?? [...DELIVERY_DEFAULTS.slots],
   };
 
@@ -114,10 +125,16 @@ export const createOrder = createServerFn({ method: "POST" })
       .maybeSingle();
     const ds = (settings?.value ?? {}) as Record<string, unknown>;
     const deliveryConfig: DeliveryConfig = {
-      sofiaShippingCents: Number(ds["sofia_shipping_cents"] ?? DELIVERY_DEFAULTS.sofiaShippingCents),
-      countryShippingCents: Number(ds["country_shipping_cents"] ?? DELIVERY_DEFAULTS.countryShippingCents),
+      sofiaShippingCents: Number(
+        ds["sofia_shipping_cents"] ?? DELIVERY_DEFAULTS.sofiaShippingCents,
+      ),
+      countryShippingCents: Number(
+        ds["country_shipping_cents"] ?? DELIVERY_DEFAULTS.countryShippingCents,
+      ),
       leadTimeDays: Number(ds["lead_time_days"] ?? DELIVERY_DEFAULTS.leadTimeDays),
-      maxDeliveriesPerDay: Number(ds["max_deliveries_per_day"] ?? DELIVERY_DEFAULTS.maxDeliveriesPerDay),
+      maxDeliveriesPerDay: Number(
+        ds["max_deliveries_per_day"] ?? DELIVERY_DEFAULTS.maxDeliveriesPerDay,
+      ),
       slots: (ds["slots"] as string[] | undefined) ?? [...DELIVERY_DEFAULTS.slots],
     };
 
@@ -229,7 +246,9 @@ export const createOrder = createServerFn({ method: "POST" })
     // Имейл известията се изпращат без съдържанието на личната картичка.
     console.info(
       `[FLOWERPOST] Нова поръчка ${orderNumber} на стойност ${(subtotal + shipping) / 100} EUR.` +
-        (notifyEmail ? ` Известие до: ${notifyEmail}` : " (ADMIN_NOTIFICATION_EMAIL не е конфигуриран)"),
+        (notifyEmail
+          ? ` Известие до: ${notifyEmail}`
+          : " (ADMIN_NOTIFICATION_EMAIL не е конфигуриран)"),
     );
 
     return {
@@ -250,7 +269,9 @@ export const trackOrder = createServerFn({ method: "POST" })
 
     const { data: order } = await supabaseAdmin
       .from("orders")
-      .select("order_number, status, payment_status, total_cents, created_at, customer_email, customer_phone")
+      .select(
+        "order_number, status, payment_status, total_cents, created_at, customer_email, customer_phone",
+      )
       .eq("order_number", data.orderNumber.trim().toUpperCase())
       .maybeSingle();
 
@@ -270,9 +291,10 @@ export const trackOrder = createServerFn({ method: "POST" })
 
     const { data: fullItems } = await supabaseAdmin
       .from("order_items")
-      .select("rose_count, color_name, city, delivery_date, delivery_slot, delivery_status, courier")
+      .select(
+        "rose_count, color_name, city, delivery_date, delivery_slot, delivery_status, courier",
+      )
       .eq("order_id", orderRow!.id);
-
 
     return {
       ok: true as const,
@@ -305,7 +327,9 @@ export const getOrderSummary = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: order } = await supabaseAdmin
       .from("orders")
-      .select("id, order_number, status, payment_status, payment_method, total_cents, subtotal_cents, shipping_cents, created_at, access_token")
+      .select(
+        "id, order_number, status, payment_status, payment_method, total_cents, subtotal_cents, shipping_cents, created_at, access_token",
+      )
       .eq("order_number", data.orderNumber.toUpperCase())
       .maybeSingle();
 
@@ -315,7 +339,9 @@ export const getOrderSummary = createServerFn({ method: "POST" })
 
     const { data: items } = await supabaseAdmin
       .from("order_items")
-      .select("rose_count, color_name, recipient_name, city, delivery_date, delivery_slot, unit_price_cents, shipping_cents")
+      .select(
+        "rose_count, color_name, recipient_name, city, delivery_date, delivery_slot, unit_price_cents, shipping_cents",
+      )
       .eq("order_id", order.id);
 
     return {

@@ -122,28 +122,57 @@ function Checkout() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="firstName">Име</Label>
-              <Input id="firstName" value={form.firstName} onChange={set("firstName")} className="mt-2 rounded-none" />
+              <Input
+                id="firstName"
+                value={form.firstName}
+                onChange={set("firstName")}
+                className="mt-2 rounded-none"
+              />
             </div>
             <div>
               <Label htmlFor="lastName">Фамилия</Label>
-              <Input id="lastName" value={form.lastName} onChange={set("lastName")} className="mt-2 rounded-none" />
+              <Input
+                id="lastName"
+                value={form.lastName}
+                onChange={set("lastName")}
+                className="mt-2 rounded-none"
+              />
             </div>
             <div>
               <Label htmlFor="email">Имейл</Label>
-              <Input id="email" type="email" value={form.email} onChange={set("email")} className="mt-2 rounded-none" />
+              <Input
+                id="email"
+                type="email"
+                value={form.email}
+                onChange={set("email")}
+                className="mt-2 rounded-none"
+              />
             </div>
             <div>
               <Label htmlFor="phone">Телефон</Label>
-              <Input id="phone" value={form.phone} onChange={set("phone")} className="mt-2 rounded-none" />
+              <Input
+                id="phone"
+                value={form.phone}
+                onChange={set("phone")}
+                className="mt-2 rounded-none"
+              />
             </div>
             <div className="sm:col-span-2">
               <Label htmlFor="billing">Адрес за фактуриране</Label>
-              <Input id="billing" value={form.billingAddress} onChange={set("billingAddress")} className="mt-2 rounded-none" />
+              <Input
+                id="billing"
+                value={form.billingAddress}
+                onChange={set("billingAddress")}
+                className="mt-2 rounded-none"
+              />
             </div>
           </div>
 
           <label className="flex cursor-pointer items-center gap-2.5 text-sm">
-            <Checkbox checked={invoiceRequired} onCheckedChange={(v) => setInvoiceRequired(v === true)} />
+            <Checkbox
+              checked={invoiceRequired}
+              onCheckedChange={(v) => setInvoiceRequired(v === true)}
+            />
             <span>Желая фактура на фирма</span>
           </label>
 
@@ -151,26 +180,49 @@ function Checkout() {
             <div className="grid gap-4 border border-border bg-secondary/30 p-5 sm:grid-cols-3">
               <div className="sm:col-span-3">
                 <Label htmlFor="companyName">Име на фирмата</Label>
-                <Input id="companyName" value={form.companyName} onChange={set("companyName")} className="mt-2 rounded-none bg-background" />
+                <Input
+                  id="companyName"
+                  value={form.companyName}
+                  onChange={set("companyName")}
+                  className="mt-2 rounded-none bg-background"
+                />
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="companyEik">ЕИК</Label>
-                <Input id="companyEik" value={form.companyEik} onChange={set("companyEik")} className="mt-2 rounded-none bg-background" />
+                <Input
+                  id="companyEik"
+                  value={form.companyEik}
+                  onChange={set("companyEik")}
+                  className="mt-2 rounded-none bg-background"
+                />
               </div>
               <div>
                 <Label htmlFor="companyVat">ДДС №</Label>
-                <Input id="companyVat" value={form.companyVat} onChange={set("companyVat")} className="mt-2 rounded-none bg-background" />
+                <Input
+                  id="companyVat"
+                  value={form.companyVat}
+                  onChange={set("companyVat")}
+                  className="mt-2 rounded-none bg-background"
+                />
               </div>
             </div>
           )}
 
           <div className="space-y-3 border-t border-border pt-6">
             <label className="flex cursor-pointer items-start gap-2.5 text-sm">
-              <Checkbox checked={confirmedMessage} onCheckedChange={(v) => setConfirmedMessage(v === true)} className="mt-0.5" />
+              <Checkbox
+                checked={confirmedMessage}
+                onCheckedChange={(v) => setConfirmedMessage(v === true)}
+                className="mt-0.5"
+              />
               <span>Проверих текста на картичката и е верен.</span>
             </label>
             <label className="flex cursor-pointer items-start gap-2.5 text-sm">
-              <Checkbox checked={acceptDeliveryPolicy} onCheckedChange={(v) => setAcceptDeliveryPolicy(v === true)} className="mt-0.5" />
+              <Checkbox
+                checked={acceptDeliveryPolicy}
+                onCheckedChange={(v) => setAcceptDeliveryPolicy(v === true)}
+                className="mt-0.5"
+              />
               <span>
                 Запознат съм с{" "}
                 <Link to="/dostavka-i-plashtane" className="underline underline-offset-4">
@@ -184,7 +236,11 @@ function Checkout() {
               </span>
             </label>
             <label className="flex cursor-pointer items-start gap-2.5 text-sm">
-              <Checkbox checked={acceptTerms} onCheckedChange={(v) => setAcceptTerms(v === true)} className="mt-0.5" />
+              <Checkbox
+                checked={acceptTerms}
+                onCheckedChange={(v) => setAcceptTerms(v === true)}
+                className="mt-0.5"
+              />
               <span>
                 Приемам{" "}
                 <Link to="/obshti-uslovia" className="underline underline-offset-4">

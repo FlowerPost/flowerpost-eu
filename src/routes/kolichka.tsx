@@ -8,7 +8,10 @@ export const Route = createFileRoute("/kolichka")({
   head: () => ({
     meta: [
       { title: "Количка — FLOWERPOST" },
-      { name: "description", content: "Прегледай кутиите в количката си преди да завършиш поръчката." },
+      {
+        name: "description",
+        content: "Прегледай кутиите в количката си преди да завършиш поръчката.",
+      },
       { property: "og:title", content: "Количка — FLOWERPOST" },
       { property: "og:description", content: "Прегледай кутиите в количката си." },
       { property: "og:url", content: "/kolichka" },
@@ -75,7 +78,11 @@ function CartPage() {
                   <dd className="whitespace-pre-wrap">
                     {item.cardRecipientName}
                     {item.cardMessage ? ` — „${item.cardMessage}“` : ""}
-                    {item.hideSender ? " (анонимно)" : item.cardSenderName ? `, ${item.cardSenderName}` : ""}
+                    {item.hideSender
+                      ? " (анонимно)"
+                      : item.cardSenderName
+                        ? `, ${item.cardSenderName}`
+                        : ""}
                   </dd>
                 </div>
                 <div className="flex gap-3">

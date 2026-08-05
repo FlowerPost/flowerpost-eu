@@ -56,7 +56,13 @@ export function NewsletterForm({ className = "" }: { className?: string }) {
           aria-label="Имейл за бюлетин"
           className="h-10 rounded-none bg-background"
         />
-        <Button type="submit" size="sm" variant="secondary" className="h-10 rounded-none px-4" disabled={state === "loading"}>
+        <Button
+          type="submit"
+          size="sm"
+          variant="secondary"
+          className="h-10 rounded-none px-4"
+          disabled={state === "loading"}
+        >
           {state === "loading" ? "…" : "Запиши ме"}
         </Button>
       </div>

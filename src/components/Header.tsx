@@ -27,7 +27,9 @@ export function Header() {
   return (
     <header
       className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
-        scrolled ? "border-border bg-background/90 backdrop-blur-md" : "border-transparent bg-background"
+        scrolled
+          ? "border-border bg-background/90 backdrop-blur-md"
+          : "border-transparent bg-background"
       }`}
     >
       <div className="container-fp flex h-16 items-center justify-between gap-4 md:h-20">
@@ -64,7 +66,11 @@ export function Header() {
             )}
           </Link>
 
-          <Button asChild size="sm" className="hidden rounded-none px-5 tracking-wide sm:inline-flex">
+          <Button
+            asChild
+            size="sm"
+            className="hidden rounded-none px-5 tracking-wide sm:inline-flex"
+          >
             <Link to="/poruchaj">Поръчай</Link>
           </Button>
 
@@ -75,7 +81,11 @@ export function Header() {
             aria-label={open ? "Затвори менюто" : "Отвори менюто"}
             aria-expanded={open}
           >
-            {open ? <X className="h-5 w-5" strokeWidth={1.5} /> : <Menu className="h-5 w-5" strokeWidth={1.5} />}
+            {open ? (
+              <X className="h-5 w-5" strokeWidth={1.5} />
+            ) : (
+              <Menu className="h-5 w-5" strokeWidth={1.5} />
+            )}
           </button>
         </div>
       </div>

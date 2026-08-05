@@ -52,7 +52,9 @@ export const checkoutSchema = z.object({
     errorMap: () => ({ message: "Потвърди, че си проверил текста на картичката." }),
   }),
   acceptDeliveryPolicy: z.literal(true, {
-    errorMap: () => ({ message: "Потвърди, че си запознат с политиката за доставка и рекламации." }),
+    errorMap: () => ({
+      message: "Потвърди, че си запознат с политиката за доставка и рекламации.",
+    }),
   }),
 });
 
