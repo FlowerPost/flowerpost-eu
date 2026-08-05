@@ -69,7 +69,7 @@ export const getDashboard = createServerFn({ method: "GET" })
 
 export const listOrders = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z
       .object({
         search: z.string().optional().default(""),
@@ -105,7 +105,7 @@ export const listOrders = createServerFn({ method: "POST" })
 
 export const getOrderDetail = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => z.object({ orderId: z.string().uuid() }).parse(data))
+  .validator((data: unknown) => z.object({ orderId: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
     const db = await assertAdmin(context.userId);
     const [order, items, history, payments] = await Promise.all([
@@ -128,7 +128,7 @@ export const getOrderDetail = createServerFn({ method: "POST" })
 
 export const updateOrder = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z
       .object({
         orderId: z.string().uuid(),
@@ -196,7 +196,7 @@ export const updateOrder = createServerFn({ method: "POST" })
 
 export const updateOrderItemDelivery = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z
       .object({
         itemId: z.string().uuid(),
@@ -238,7 +238,7 @@ export const getProductAdmin = createServerFn({ method: "GET" })
 
 export const updateProductAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z
       .object({
         id: z.string().uuid(),
@@ -263,7 +263,7 @@ export const updateProductAdmin = createServerFn({ method: "POST" })
 
 export const updateColorAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z
       .object({
         id: z.string().uuid(),

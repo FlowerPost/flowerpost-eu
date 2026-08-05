@@ -101,7 +101,7 @@ export const getShopData = createServerFn({ method: "GET" }).handler(async () =>
 
 /** Създава поръчка със статус „Очаква плащане“. Плащането НЕ се отбелязва автоматично. */
 export const createOrder = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => createOrderSchema.parse(data))
+  .validator((data: unknown) => createOrderSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
@@ -262,7 +262,7 @@ export const createOrder = createServerFn({ method: "POST" })
 
 /** Проследяване на поръчка по номер + имейл или телефон. */
 export const trackOrder = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => trackingSchema.parse(data))
+  .validator((data: unknown) => trackingSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const contact = data.contact.trim().toLowerCase();
@@ -320,7 +320,7 @@ export const trackOrder = createServerFn({ method: "POST" })
 
 /** Резюме на поръчката за страницата с потвърждение (по номер + токен). */
 export const getOrderSummary = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z.object({ orderNumber: z.string().min(4), token: z.string().min(8) }).parse(data),
   )
   .handler(async ({ data }) => {

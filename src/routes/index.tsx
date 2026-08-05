@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
-import boxClosedImg from "@/assets/box-closed.jpg";
+import boxClosedImg from "@/assets/hero-box-open.jpg";
 import rosesImg from "@/assets/roses-closeup.jpg";
 import cardImg from "@/assets/card-detail.jpg";
 import heroVideo from "@/assets/hero-3d.mp4.asset.json";
@@ -138,7 +138,7 @@ function Home() {
             <div className="mt-8 overflow-hidden">
               <img
                 src={boxClosedImg}
-                alt="Затворена кутия FLOWERPOST със сатенена панделка"
+                alt="Отворена кутия FLOWERPOST със свежи рози и сатенена панделка"
                 width={1200}
                 height={1200}
                 loading="lazy"

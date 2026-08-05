@@ -11,7 +11,7 @@ const OK = { ok: true as const };
 
 /** Контактна форма. */
 export const submitContact = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => contactSchema.parse(data))
+  .validator((data: unknown) => contactSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("contact_requests").insert({
@@ -28,7 +28,7 @@ export const submitContact = createServerFn({ method: "POST" })
 
 /** Корпоративно запитване. */
 export const submitCorporate = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => corporateSchema.parse(data))
+  .validator((data: unknown) => corporateSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("corporate_requests").insert({
@@ -47,7 +47,7 @@ export const submitCorporate = createServerFn({ method: "POST" })
 
 /** Абонамент за бюлетин. */
 export const subscribeNewsletter = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => newsletterSchema.parse(data))
+  .validator((data: unknown) => newsletterSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
@@ -59,7 +59,7 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
 
 /** Рекламация. */
 export const submitComplaint = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => complaintSchema.parse(data))
+  .validator((data: unknown) => complaintSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("complaints").insert({
@@ -77,7 +77,7 @@ export const submitComplaint = createServerFn({ method: "POST" })
 
 /** Известяване при нова наличност. */
 export const notifyWhenAvailable = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => stockNotifySchema.parse(data))
+  .validator((data: unknown) => stockNotifySchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
