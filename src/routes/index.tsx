@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
-import heroImg from "@/assets/hero-box-open.jpg";
+// heroImg removed in favor of hero-video.mp4
 import boxClosedImg from "@/assets/box-closed.jpg";
 import rosesImg from "@/assets/roses-closeup.jpg";
 import cardImg from "@/assets/card-detail.jpg";
@@ -88,14 +88,17 @@ function Home() {
           </div>
 
           <div className="order-1 md:order-2">
-            <div className="overflow-hidden shadow-[var(--shadow-lift)]">
-              <img
-                src={heroImg}
-                alt="Отворена подаръчна кутия FLOWERPOST в цвят шампанско с редица свежи червени рози"
-                width={1600}
-                height={1104}
-                className="h-full w-full object-cover"
-              />
+            <div className="overflow-hidden shadow-[var(--shadow-lift)] bg-ink">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster="/hero-poster.webp"
+                className="h-full w-full object-cover aspect-[1600/1104]"
+              >
+                <source src="/hero-video.mp4" type="video/mp4" />
+              </video>
             </div>
           </div>
         </div>
