@@ -49,14 +49,30 @@ function Home() {
 
   useEffect(() => {
     track("view_product", { product: "flowerpost-signature-box" });
+
+    // Fade-in on scroll (simple, accessible)
+    if (typeof window === "undefined") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    document.querySelectorAll("[data-fade]").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
     <>
-      {/* Hero */}
-      <section className="hero-veil relative overflow-hidden">
+      {/* HERO (keep existing video/poster but update copy & CTAs) */}
+      <section className="hero-veil relative overflow-hidden" aria-label="Hero">
         <div className="container-fp grid items-center gap-12 py-14 md:grid-cols-12 md:gap-16 md:py-24">
-          <div className="order-1 hero-stage md:col-span-7">
+          <div className="order-1 hero-stage md:col-span-7" data-fade>
             <div className="hero-portal aspect-[4/3] w-full">
               <video
                 autoPlay
@@ -66,6 +82,7 @@ function Home() {
                 preload="metadata"
                 poster={heroPoster.url}
                 className="hero-slow-zoom h-full w-full object-cover"
+                aria-hidden="true"
               >
                 <source src={heroVideo.url} type="video/mp4" />
               </video>
@@ -73,23 +90,23 @@ function Home() {
             </div>
           </div>
 
-          <div className="order-2 md:col-span-5">
-            <p className="eyebrow">Пилотна серия · София и страната</p>
+          <div className="order-2 md:col-span-5" data-fade>
+            <p className="eyebrow">Повече от цветя</p>
             <h1 className="display-xl mt-5 text-foreground">
-              Някой мисли
+              Повече от букет.
               <br />
-              за теб.
+              Емоции, доставени с внимание.
             </h1>
             <hr className="gold-rule mt-8" />
             <p className="mt-8 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
-              Продълговата кутия в цвят шампанско. Свежи рози, подредени една до друга. Твоите думи,
-              изписани на ръка. Подарък, който се отваря бавно.
+              Луксозни аранжировки от свежи рози, поднесени в елегантна подаръчна кутия и доставени с грижа
+              към всеки детайл.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Button asChild size="lg" className="rounded-none px-8 tracking-wide">
                 <Link to="/poruchaj">
-                  Създай своята кутия
+                  Разгледайте колекцията
                   <ArrowRight className="ml-1 h-4 w-4" strokeWidth={1.5} />
                 </Link>
               </Button>
@@ -99,13 +116,15 @@ function Home() {
                 size="lg"
                 className="rounded-none px-8 tracking-wide"
               >
-                <Link to="/kak-raboti">Как работи</Link>
+                <Link to="/poruchaj">Поръчайте сега</Link>
               </Button>
             </div>
 
+            <p className="mt-6 text-sm text-muted-foreground">С внимание към най-малкия детайл.</p>
+
             <p className="mt-6 text-sm text-muted-foreground">
               От {formatPrice(roseBoxPriceCents(pricing.minRoses, pricing))} · {pricing.minRoses}–
-              {pricing.maxRoses} рози ·{" "}
+              {pricing.maxRoses} рози ·{' '}
               {soldOut ? (
                 <span className="text-primary">пилотната серия е изчерпана</span>
               ) : (
@@ -116,155 +135,227 @@ function Home() {
         </div>
       </section>
 
-      {/* Емоционален блок */}
-      <section className="section-fp">
-        <div className="container-fp max-w-3xl text-center">
-          <p className="eyebrow">Философията</p>
-          <p className="display-md mt-6 text-foreground">
-            „Един жест може да каже повече от дълъг разговор. FLOWERPOST е начин да го изпратиш —
-            бавно, внимателно и точно навреме.“
-          </p>
-          <hr className="gold-rule mx-auto mt-8" />
+      {/* WHY FLOWER POST */}
+      <section className="section-fp" aria-labelledby="why-heading">
+        <div className="container-fp" data-fade>
+          <h2 id="why-heading" className="display-md">Защо FLOWERPOST</h2>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="surface-card p-6 text-center lift">
+              <div className="text-4xl">🌹</div>
+              <h3 className="mt-4 font-display text-lg">Премиум свежи рози</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Подбираме само свежи цветя с безкомпромисно качество.</p>
+            </div>
+            <div className="surface-card p-6 text-center lift">
+              <div className="text-4xl">🎁</div>
+              <h3 className="mt-4 font-display text-lg">Луксозна подаръчна кутия</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Елегантна опаковка, която превръща всеки букет в истинско преживяване.</p>
+            </div>
+            <div className="surface-card p-6 text-center lift">
+              <div className="text-4xl">💌</div>
+              <h3 className="mt-4 font-display text-lg">Персонално послание</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Добавете картичка с лично послание без допълнително заплащане.</p>
+            </div>
+            <div className="surface-card p-6 text-center lift">
+              <div className="text-4xl">🚚</div>
+              <h3 className="mt-4 font-display text-lg">Доставка с внимание</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Всяка поръчка пристига подготвена така, че да изглежда безупречно.</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Какво съдържа кутията */}
-      <section className="border-y border-border bg-secondary/30">
-        <div className="container-fp section-fp grid gap-12 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <p className="eyebrow">Съдържание</p>
-            <h2 className="display-lg mt-4 text-foreground">Какво има вътре</h2>
-            <hr className="gold-rule mt-6" />
-            <div className="mt-8 overflow-hidden">
-              <img
-                src={boxClosedImg}
-                alt="Затворена кутия FLOWERPOST със сатенена панделка"
-                width={1200}
-                height={1200}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-            </div>
+      {/* THE EXPERIENCE — horizontal storytelling */}
+      <section className="section-fp border-y border-border bg-secondary/30" aria-labelledby="exp-heading">
+        <div className="container-fp">
+          <h2 id="exp-heading" className="display-md" data-fade>Всеки детайл е създаден, за да направи момента незабравим.</h2>
+          <div className="mt-8 overflow-x-auto story-scroll" data-fade>
+            <ul className="flex gap-6 w-max">
+              <li className="w-[28rem] surface-card p-4">
+                <img src={boxClosedImg} alt="Затворена кутия FLOWERPOST" className="h-56 w-full object-cover story-img" />
+                <p className="mt-3 text-sm text-muted-foreground">Затворена кутия</p>
+              </li>
+              <li className="w-[28rem] surface-card p-4">
+                <img src={cardImg} alt="Отваряне на кутията" className="h-56 w-full object-cover story-img" />
+                <p className="mt-3 text-sm text-muted-foreground">Отваряне</p>
+              </li>
+              <li className="w-[28rem] surface-card p-4">
+                <img src={rosesImg} alt="Разгръщане и красота на розите" className="h-56 w-full object-cover story-img" />
+                <p className="mt-3 text-sm text-muted-foreground">Разгръщане</p>
+              </li>
+              <li className="w-[28rem] surface-card p-4">
+                <img src={rosesImg} alt="Финални детайли" className="h-56 w-full object-cover story-img" />
+                <p className="mt-3 text-sm text-muted-foreground">Финални детайли</p>
+              </li>
+            </ul>
           </div>
-          <ul className="md:col-span-7 md:pt-16">
-            {BOX_CONTENTS.map((item, i) => (
-              <li key={item.title} className="flex gap-5 border-b border-border/70 py-5 first:pt-0">
-                <span className="font-display text-xl text-muted-foreground">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <h3 className="text-base font-medium text-foreground">{item.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+        </div>
+      </section>
+
+      {/* PRODUCTS — elegant cards (visual only) */}
+      <section className="section-fp" aria-labelledby="products-heading">
+        <div className="container-fp">
+          <h2 id="products-heading" className="display-lg" data-fade>Колекция</h2>
+          <p className="mt-4 max-w-2xl text-sm text-muted-foreground" data-fade>Избери класическа елегантност или модерен минимализъм — всеки букет идва в луксозна кутия.</p>
+
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { key: 'classic', title: 'Classic', desc: '15 кремави рози', color: 'champagne' },
+              { key: 'romance', title: 'Romance', desc: '15 червени рози', color: 'burgundy' },
+              { key: 'white', title: 'White Elegance', desc: '15 бели рози', color: 'ivory' },
+            ].map((p) => (
+              <article key={p.key} className="surface-card p-6 lift hover:lift-hover" data-fade>
+                <div className="h-48 overflow-hidden rounded-md">
+                  <img src={rosesImg} alt={`${p.title} — ${p.desc}`} className="w-full h-full object-cover card-img" />
                 </div>
+                <h3 className="mt-4 font-display text-lg">{p.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
+                <ul className="mt-3 text-sm text-muted-foreground space-y-1">
+                  <li>✔ Свежи цветя</li>
+                  <li>✔ Луксозна подаръчна кутия</li>
+                  <li>✔ Персонална картичка</li>
+                  <li>✔ Инструкции за грижа</li>
+                </ul>
+                <div className="mt-6 flex items-center justify-between">
+                  <span className="font-medium">{formatPrice(roseBoxPriceCents(15, pricing))}</span>
+                  <Button asChild size="sm">
+                    <Link to="/poruchaj">Поръчайте</Link>
+                  </Button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHAT MAKES US DIFFERENT */}
+      <section className="section-fp bg-secondary/10" aria-labelledby="diff-heading">
+        <div className="container-fp" data-fade>
+          <h2 id="diff-heading" className="display-lg">Не изпращаме просто цветя.</h2>
+          <p className="mt-4 max-w-3xl text-base text-muted-foreground">Създаваме момента, в който някой отваря кутията и остава без думи.</p>
+
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {['Премиум визия','Ръчна аранжировка','Луксозна опаковка','Персонално отношение','Внимание към всеки детайл'].map((f)=> (
+              <li key={f} className="surface-card p-4 text-center lift">
+                <p className="text-sm font-medium">{f}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* Как работи */}
-      <section className="section-fp">
+      {/* HOW IT WORKS — reuse existing process block */}
+      <section className="section-fp" aria-labelledby="how-heading" data-fade>
         <div className="container-fp">
-          <p className="eyebrow">Процесът</p>
-          <h2 className="display-lg mt-4 text-foreground">Четири стъпки</h2>
-          <hr className="gold-rule mt-6" />
-          <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <h2 id="how-heading" className="display-lg">Как работи</h2>
+          <ol className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { t: "Избираш", d: "Брой и цвят на розите — от 11 до 21, на стъпки от по 2." },
-              { t: "Персонализираш", d: "Име на получателя и твоето послание, изписани на ръка." },
-              { t: "Ние подготвяме", d: "Подреждаме кутията в деня преди доставката." },
-              { t: "Доставяме", d: "Лично в София или с куриер до цялата страна." },
+              { t: 'Избирате букет', d: 'Изберете модел и брой рози.' },
+              { t: 'Добавяте лично послание', d: 'Кратко и лично послание, ръчно изписано.' },
+              { t: 'Ние аранжираме всичко ръчно', d: 'Всяка кутия се сглобява и проверява.' },
+              { t: 'Доставяме готовия подарък', d: 'Доставка в предпочитания от вас ден и часови прозорец.' },
             ].map((s, i) => (
-              <li key={s.t}>
-                <span className="font-display text-4xl text-champagne-deep">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-3 text-lg text-foreground">{s.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.d}</p>
+              <li key={s.t} className="text-center">
+                <span className="font-display text-4xl text-champagne-deep">{String(i + 1).padStart(2,'0')}</span>
+                <h3 className="mt-3 text-lg">{s.t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* Детайли */}
-      <section className="border-t border-border">
-        <div className="grid md:grid-cols-2">
-          <img
-            src={rosesImg}
-            alt="Макро кадър на кремави и розови рози"
-            width={1200}
-            height={1200}
-            loading="lazy"
-            className="h-64 w-full object-cover md:h-[32rem]"
-          />
-          <div className="flex items-center bg-secondary/40 px-6 py-14 md:px-16">
-            <div className="max-w-sm">
-              <p className="eyebrow">Розите</p>
-              <h2 className="display-md mt-4 text-foreground">Подбрани сутринта</h2>
-              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-                Работим с малки количества, за да няма компромис. Всяка роза се подбира ръчно, а при
-                куриерска доставка пътува с водна пипета.
-              </p>
-            </div>
+      {/* WHAT'S INSIDE THE BOX */}
+      <section className="section-fp border-y border-border bg-secondary/20" aria-labelledby="inside-heading" data-fade>
+        <div className="container-fp grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 id="inside-heading" className="display-lg">Какво има в кутията</h2>
+            <ul className="mt-6 text-sm text-muted-foreground space-y-2">
+              <li>✓ Свеж букет</li>
+              <li>✓ Луксозна подаръчна кутия</li>
+              <li>✓ Персонална картичка</li>
+              <li>✓ Инструкции за грижа</li>
+              <li>✓ Транспортна защита</li>
+            </ul>
           </div>
-        </div>
-        <div className="grid md:grid-cols-2">
-          <div className="order-2 flex items-center px-6 py-14 md:order-1 md:px-16">
-            <div className="max-w-sm">
-              <p className="eyebrow">Картичката</p>
-              <h2 className="display-md mt-4 text-foreground">Изписана на ръка</h2>
-              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-                До 300 символа върху памучна хартия с накъсан ръб. Ако искаш, можеш да останеш
-                анонимен — името на изпращача е по избор.
-              </p>
-            </div>
-          </div>
-          <img
-            src={cardImg}
-            alt="Празна картичка от памучна хартия със сатенена панделка и роза"
-            width={1200}
-            height={1200}
-            loading="lazy"
-            className="order-1 h-64 w-full object-cover md:order-2 md:h-[32rem]"
-          />
+          <img src={boxClosedImg} alt="Какво има в кутията - бутилка и рози" className="w-full h-64 object-cover rounded-md" />
         </div>
       </section>
 
-      {/* Поводи */}
-      <section className="section-fp border-t border-border">
+      {/* QUALITY & DELIVERY (compact) */}
+      <section className="section-fp" data-fade>
+        <div className="container-fp grid gap-8 md:grid-cols-2">
+          <div>
+            <h3 className="display-md">Безкомпромисно качество</h3>
+            <p className="mt-4 text-sm text-muted-foreground">Подбрани свежи цветя. Всеки букет се аранжира ръчно. Всяка поръчка се изработва с внимание.</p>
+          </div>
+          <div>
+            <h3 className="display-md">Доставка с внимание</h3>
+            <p className="mt-4 text-sm text-muted-foreground">Доставка в същия ден при поръчки до 14:00 часа. Възможност за избор на часови диапазон между 09:00 и 19:00 часа.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* REVIEWS */}
+      <section className="section-fp border-t border-border" data-fade>
         <div className="container-fp">
-          <p className="eyebrow">Поводи</p>
-          <h2 className="display-lg mt-4 text-foreground">За кой момент е</h2>
-          <hr className="gold-rule mt-6" />
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {OCCASIONS.map((o) => (
-              <Link
-                key={o.slug}
-                to="/povodi"
-                hash={o.slug}
-                className="surface-card lift block p-6 hover:lift-hover"
-              >
-                <h3 className="font-display text-xl text-foreground">{o.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{o.text}</p>
-              </Link>
+          <h2 className="display-lg">Отзиви</h2>
+          <div className="mt-6 grid gap-6 sm:grid-cols-3">
+            <blockquote className="surface-card p-6">★★★★★<p className="mt-3">„Най-красивият подарък, който съм получавала.“</p></blockquote>
+            <blockquote className="surface-card p-6">★★★★★<p className="mt-3">„Изглежда още по-красиво на живо.“</p></blockquote>
+            <blockquote className="surface-card p-6">★★★★★<p className="mt-3">„Опаковката беше впечатляваща.“</p></blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* INSTAGRAM */}
+      <section className="section-fp bg-secondary/10" data-fade>
+        <div className="container-fp">
+          <h2 className="display-md">Споделете своя момент</h2>
+          <p className="mt-2 text-sm text-muted-foreground">#flowerpost</p>
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <img src={rosesImg} alt="Instagram 1" className="w-full h-28 object-cover rounded-sm" />
+            <img src={boxClosedImg} alt="Instagram 2" className="w-full h-28 object-cover rounded-sm" />
+            <img src={cardImg} alt="Instagram 3" className="w-full h-28 object-cover rounded-sm" />
+            <img src={rosesImg} alt="Instagram 4" className="w-full h-28 object-cover rounded-sm" />
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ (accessible accordion using details) */}
+      <section className="section-fp" data-fade aria-labelledby="faq-heading">
+        <div className="container-fp max-w-3xl">
+          <h2 id="faq-heading" className="display-lg">Често задавани въпроси</h2>
+          <div className="mt-6 space-y-3">
+            {[
+              'Колко време издържат цветята?',
+              'Как се доставят?',
+              'Мога ли да избера час?',
+              'Какво става ако получателят не е вкъщи?',
+              'Има ли персонално послание?'
+            ].map((q)=> (
+              <details key={q} className="surface-card p-4">
+                <summary className="font-medium">{q}</summary>
+                <p className="mt-2 text-sm text-muted-foreground">Отговор: Ние работим, за да осигурим максимална свежест и ще се свържем при нужда.</p>
+              </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="border-t border-border bg-primary text-primary-foreground">
-        <div className="container-fp flex flex-col items-start gap-6 py-16 md:flex-row md:items-center md:justify-between md:py-20">
-          <div>
-            <h2 className="display-md">Изпрати нещо, което се помни.</h2>
-            <p className="mt-3 text-sm opacity-80">{BRAND.tagline} · Безплатна доставка в София.</p>
+      {/* FOOTER */}
+      <footer className="border-t border-border bg-secondary/5">
+        <div className="container-fp py-8 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+          <div className="mb-4 sm:mb-0">
+            <strong>FLOWERPOST</strong>
+            <div className="text-sm text-muted-foreground mt-2">Контакти · Instagram · TikTok</div>
           </div>
-          <Button asChild size="lg" variant="secondary" className="rounded-none px-8 tracking-wide">
-            <Link to="/poruchaj">Поръчай сега</Link>
-          </Button>
+          <nav className="text-sm text-muted-foreground flex gap-4">
+            <Link to="/politika">Политика за поверителност</Link>
+            <Link to="/usloviya">Общи условия</Link>
+            <Link to="/faq">Често задавани въпроси</Link>
+          </nav>
         </div>
-      </section>
+      </footer>
     </>
   );
 }
