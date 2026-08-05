@@ -9,7 +9,11 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "setup": "npm install",
+    "setup:bun": "bun install",
+    "ci": "npm run lint && npm run build",
+    "ci:bun": "bun run lint && bun run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -83,7 +87,8 @@
     "nitro": "3.0.260603-beta",
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
     "vite": "^8.1.5"
   }
 }
