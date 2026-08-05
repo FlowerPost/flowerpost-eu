@@ -76,17 +76,19 @@ function Home() {
         <div className="container-fp grid items-center gap-12 py-14 md:grid-cols-12 md:gap-16 md:py-24">
           <div className="order-1 hero-stage md:col-span-7">
             <div className="hero-portal aspect-[4/3] w-full">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={heroPoster.url}
-                className="hero-slow-zoom h-full w-full object-cover"
-              >
-                <source src={heroVideo.url} type="video/mp4" />
-              </video>
+              <div className="hero-video-reveal h-full w-full">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={heroPoster.url}
+                  className="hero-slow-zoom h-full w-full object-cover"
+                >
+                  <source src={heroVideo.url} type="video/mp4" />
+                </video>
+              </div>
               <span className="hero-portal-rim" aria-hidden="true" />
             </div>
           </div>
