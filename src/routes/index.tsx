@@ -51,8 +51,25 @@ function Home() {
     <>
       {/* Hero */}
       <section className="hero-veil relative overflow-hidden">
-        <div className="container-fp grid items-center gap-10 py-14 md:grid-cols-2 md:gap-16 md:py-24">
-          <div className="order-2 md:order-1">
+        <div className="container-fp grid items-center gap-12 py-14 md:grid-cols-12 md:gap-16 md:py-24">
+          <div className="order-1 hero-stage md:col-span-7">
+            <div className="hero-portal aspect-[4/3] w-full">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={heroPoster.url}
+                className="hero-slow-zoom h-full w-full object-cover"
+              >
+                <source src={heroVideo.url} type="video/mp4" />
+              </video>
+              <span className="hero-portal-rim" aria-hidden="true" />
+            </div>
+          </div>
+
+          <div className="order-2 md:col-span-5">
             <p className="eyebrow">Пилотна серия · София и страната</p>
             <h1 className="display-xl mt-5 text-foreground">
               Някой мисли
@@ -86,22 +103,6 @@ function Home() {
                 <span>останали {inventory} кутии</span>
               )}
             </p>
-          </div>
-
-          <div className="order-1 md:order-2">
-            <div className="overflow-hidden shadow-[var(--shadow-lift)] bg-ink">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={heroPoster.url}
-                className="h-full w-full object-cover aspect-[4/3]"
-              >
-                <source src={heroVideo.url} type="video/mp4" />
-              </video>
-            </div>
           </div>
         </div>
       </section>
