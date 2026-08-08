@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import type { MutableRefObject } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -22,6 +22,15 @@ const LOOK_AT_Y = 0.55;
 const ORBIT_MAX_ANGLE = 0.28;
 
 const WRAP_HIDE_AT = DOLLY_END + 0.02;
+
+const DPR_MAX_TOUCH = 1.5;
+const DPR_MAX_DEFAULT = 2;
+
+function getMaxDpr(): number {
+  if (typeof window === "undefined") return DPR_MAX_DEFAULT;
+  const isTouch = window.matchMedia("(pointer: coarse)").matches;
+  return isTouch ? DPR_MAX_TOUCH : DPR_MAX_DEFAULT;
+}
 
 function clamp01(value: number): number {
   return Math.min(1, Math.max(0, value));
@@ -162,6 +171,7 @@ interface FlowerpostBox3DProps {
 
 export function FlowerpostBox3D({ progress, className }: FlowerpostBox3DProps) {
   const prefersReducedMotion = useReducedMotion();
+  const [maxDpr] = useState(getMaxDpr);
 
   // r3f's useMeasure sometimes measures a 0-size container during Fast
   // Refresh (HMR after a WebGL context loss) and never re-measures on its
@@ -180,7 +190,7 @@ export function FlowerpostBox3D({ progress, className }: FlowerpostBox3DProps) {
     <div className={className}>
       <Canvas
         gl={{ alpha: true, antialias: true }}
-        dpr={[1, 2]}
+        dpr={[1, maxDpr]}
         style={{ background: "transparent" }}
       >
         <Suspense fallback={null}>
