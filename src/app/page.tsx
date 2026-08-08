@@ -1,8 +1,9 @@
-// HeroSection (3D scroll-driven unboxing) is temporarily replaced by
-// HeroVideoSection below — kept in the codebase, not deleted, swap back by
-// restoring this import and the JSX usage further down.
+// Earlier Hero variants (3D scroll-driven unboxing, scroll-scrubbed video)
+// are kept in the codebase, not deleted — swap back by restoring one of
+// these imports and its JSX usage further down.
 // import { HeroSection } from "@/components/HeroSection";
-import { HeroVideoSection } from "@/components/HeroVideoSection";
+// import { HeroVideoSection } from "@/components/HeroVideoSection";
+import { ScrollBoxReveal } from "@/components/ScrollBoxReveal";
 import { IntroStatement } from "@/components/IntroStatement";
 import { StoryScene } from "@/components/StoryScene";
 import { ProductScene } from "@/components/ProductScene";
@@ -14,7 +15,7 @@ import { Footer } from "@/components/Footer";
 export default function Home() {
   return (
     <main className="flex flex-col">
-      <HeroVideoSection />
+      <ScrollBoxReveal />
       <IntroStatement />
       <StoryScene />
       <ProductScene />
