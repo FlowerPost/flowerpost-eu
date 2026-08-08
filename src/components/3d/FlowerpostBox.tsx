@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import type { MutableRefObject } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -162,6 +162,19 @@ interface FlowerpostBox3DProps {
 
 export function FlowerpostBox3D({ progress, className }: FlowerpostBox3DProps) {
   const prefersReducedMotion = useReducedMotion();
+
+  // r3f's useMeasure sometimes measures a 0-size container during Fast
+  // Refresh (HMR after a WebGL context loss) and never re-measures on its
+  // own, leaving the canvas stuck at the browser's 300x150 default. A
+  // resize nudge shortly after mount is enough to trigger a fresh
+  // measurement. Dev-only: production never hits the HMR context-loss path.
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const timer = window.setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 100);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return (
     <div className={className}>
