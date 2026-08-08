@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --color-ivory: #f7f1e8;
+  --color-champagne-sand: #ede1ce;
+  --color-gold: #b08d57;
+  --color-ribbon: #d8c39b;
+  --color-bordeaux: #5c1a24;
+  --color-ink: #2b2420;
+  --color-stone: #6b6259;
+}
+
+@theme inline {
+  --color-ivory: var(--color-ivory);
+  --color-champagne-sand: var(--color-champagne-sand);
+  --color-gold: var(--color-gold);
+  --color-ribbon: var(--color-ribbon);
+  --color-bordeaux: var(--color-bordeaux);
+  --color-ink: var(--color-ink);
+  --color-stone: var(--color-stone);
+  --font-playfair: var(--font-playfair);
+  --font-space-mono: var(--font-space-mono);
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+@layer components {
+  .tf-display {
+    font-family: var(--font-playfair);
+    font-size: clamp(2.75rem, 6vw, 6rem);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+
+  .tf-headline {
+    font-family: var(--font-playfair);
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  .tf-quote {
+    font-family: var(--font-playfair);
+    font-style: italic;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    line-height: 1.4;
+  }
+
+  .tf-mono {
+    font-family: var(--font-space-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .tf-body {
+    font-family: system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-stone);
+  }
+
+  .btn-bordeaux {
+    font-family: var(--font-space-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    background-color: var(--color-bordeaux);
+    color: var(--color-ivory);
+    transition: opacity 200ms ease;
+  }
+  .btn-bordeaux:hover {
+    opacity: 0.85;
+  }
+
+  .btn-gold-outline {
+    font-family: var(--font-space-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    border: 1px solid var(--color-gold);
+    color: var(--color-gold);
+    background-color: transparent;
+    transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-gold-outline:hover {
+    background-color: var(--color-gold);
+    color: var(--color-ivory);
+  }
+
+  .hairline {
+    border-color: color-mix(in srgb, var(--color-gold) 35%, transparent);
+  }
+}
