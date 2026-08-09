@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import NextImage from "next/image";
 import {
+  AnimatePresence,
   motion,
   useMotionValueEvent,
   useReducedMotion,
@@ -75,6 +75,12 @@ export function HeroReveal() {
   const dprRef = useRef(1);
 
   const [ready, setReady] = useState(false);
+  // Discrete phase index drives which headline block is mounted. This is
+  // deliberately NOT a continuous opacity crossfade across 3 permanently
+  // co-mounted blocks — that construction let more than one become
+  // readable at once. AnimatePresence below guarantees only one phase's
+  // JSX is ever in the DOM (plus its own brief exit copy).
+  const [phase, setPhase] = useState<1 | 2 | 3>(1);
   const prefersReducedMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -82,26 +88,17 @@ export function HeroReveal() {
     offset: ["start start", "end end"],
   });
 
-  const phase1Opacity = useTransform(
-    scrollYProgress,
-    [0, PHASE_1_END - 0.06, PHASE_1_END],
-    [1, 1, 0]
-  );
   const seamScaleX = useTransform(scrollYProgress, [0.04, 0.16], [0, 1]);
 
-  const phase2Opacity = useTransform(
-    scrollYProgress,
-    [PHASE_1_END, PHASE_1_END + 0.04, PHASE_2_END - 0.04, PHASE_2_END],
-    [0, 1, 1, 0]
-  );
-
-  const phase3Opacity = useTransform(scrollYProgress, [PHASE_2_END, PHASE_2_END + 0.08], [0, 1]);
-  const phase3Y = useTransform(scrollYProgress, [PHASE_2_END, PHASE_2_END + 0.1], [24, 0]);
-
   // Fugate-style depth drift (Motion Bible §4): the plate moves at its own
-  // slow velocity, independent of the phase text crossfades above it.
+  // slow velocity, independent of the phase text crossfades beside it.
   const plateParallaxY = useTransform(scrollYProgress, [0, 1], [0, -48]);
   const cueOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
+
+  useMotionValueEvent(scrollYProgress, "change", (value) => {
+    const next = value < PHASE_1_END ? 1 : value < PHASE_2_END ? 2 : 3;
+    setPhase((prev) => (prev === next ? prev : next));
+  });
 
   const drawFrame = (index: number) => {
     const canvas = canvasRef.current;
@@ -172,57 +169,75 @@ export function HeroReveal() {
     if (frame !== currentFrameRef.current) drawFrame(frame);
   });
 
-  return (
-    <section ref={sectionRef} className="relative min-h-[440vh] bg-[#131e15]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <div
-          className="pointer-events-none absolute -left-28 -top-28 h-[26rem] w-[26rem] opacity-[0.05]"
-          aria-hidden
-        >
-          <NextImage src="/images/fp-monogram.jpg" alt="" fill className="object-contain" sizes="26rem" />
-        </div>
+  const phaseTransition = {
+    duration: prefersReducedMotion ? 0.01 : DUR.base,
+    ease: EASE_LUXE,
+  };
 
+  return (
+    <section ref={sectionRef} className="relative min-h-[440vh] w-full bg-[#131e15]">
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
         <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-10 px-8 md:grid-cols-[0.4fr_0.6fr] md:gap-16 md:px-14">
           <div className="relative min-h-[22rem] md:min-h-[26rem]">
-            <motion.div
-              style={{ opacity: phase1Opacity }}
-              className="absolute inset-0 flex flex-col justify-center"
-            >
-              <span className="tf-mono mb-6 text-gold/80">Flowerpost · Bulgaria</span>
-              <h1 className="tf-display mb-8 text-ivory">
-                Преди отварянето —
-                <br />
-                <span className="text-ribbon">тишина.</span>
-              </h1>
-              <motion.span
-                style={{ scaleX: seamScaleX }}
-                className="block h-px w-24 origin-left bg-gold"
-                aria-hidden
-              />
-            </motion.div>
+            <AnimatePresence mode="sync">
+              {phase === 1 && (
+                <motion.div
+                  key="phase-1"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={phaseTransition}
+                  className="absolute inset-0 flex flex-col justify-center"
+                >
+                  <span className="tf-mono mb-6 text-champagne-sand">Flowerpost · Bulgaria</span>
+                  <h1 className="tf-display mb-8 text-ivory">
+                    Преди отварянето —
+                    <br />
+                    <span className="text-ribbon">тишина.</span>
+                  </h1>
+                  <motion.span
+                    style={{ scaleX: seamScaleX }}
+                    className="block h-px w-24 origin-left bg-gold"
+                    aria-hidden
+                  />
+                </motion.div>
+              )}
 
-            <motion.div
-              style={{ opacity: phase2Opacity }}
-              className="absolute inset-0 flex flex-col justify-center"
-            >
-              <span className="tf-mono mb-6 text-gold/80">Отваряне</span>
-              <p className="tf-quote max-w-sm text-ivory/85">
-                Панделката отстъпва. Капакът се повдига.
-              </p>
-            </motion.div>
+              {phase === 2 && (
+                <motion.div
+                  key="phase-2"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={phaseTransition}
+                  className="absolute inset-0 flex flex-col justify-center"
+                >
+                  <span className="tf-mono mb-6 text-champagne-sand">Отваряне</span>
+                  <p className="tf-quote max-w-sm text-ivory/90">
+                    Панделката отстъпва. Капакът се повдига.
+                  </p>
+                </motion.div>
+              )}
 
-            <motion.div
-              style={{ opacity: phase3Opacity, y: phase3Y }}
-              className="absolute inset-0 flex flex-col justify-center"
-            >
-              <span className="tf-mono mb-6 text-gold/80">Разкритие</span>
-              <h2 className="tf-headline mb-8 text-ivory">
-                Розите, <em className="text-ribbon">разкрити</em>.
-              </h2>
-              <a href="#product" className="btn-bordeaux inline-block w-fit">
-                Разгледай кутиите
-              </a>
-            </motion.div>
+              {phase === 3 && (
+                <motion.div
+                  key="phase-3"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={phaseTransition}
+                  className="absolute inset-0 flex flex-col justify-center"
+                >
+                  <span className="tf-mono mb-6 text-champagne-sand">Разкритие</span>
+                  <h2 className="tf-headline mb-8 text-ivory">
+                    Розите, <em className="text-ribbon">разкрити</em>.
+                  </h2>
+                  <a href="#product" className="btn-bordeaux inline-block w-fit">
+                    Разгледай кутиите
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <motion.div
