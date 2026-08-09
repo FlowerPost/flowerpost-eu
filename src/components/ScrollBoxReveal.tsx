@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
-const FRAME_COUNT = 121;
+const FRAME_COUNT = 241;
 const FRAME_PATH = (n: number) => `/sequences/box-reveal/frame_${String(n).padStart(3, "0")}.webp`;
 const STATIC_FRAME_PROGRESS = 0.6;
 
@@ -144,7 +144,7 @@ export function ScrollBoxReveal() {
   });
 
   return (
-    <section ref={sectionRef} className="relative min-h-[240vh] bg-ivory">
+    <section ref={sectionRef} className="relative min-h-[480vh] bg-ivory">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         <div ref={containerRef} className="absolute inset-0">
           <canvas ref={canvasRef} className="h-full w-full" aria-hidden />
