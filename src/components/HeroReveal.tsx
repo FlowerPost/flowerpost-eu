@@ -68,7 +68,7 @@ function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, cw: num
 
 export function HeroReveal() {
   const sectionRef = useRef<HTMLElement>(null);
-  const plateRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef(-1);
@@ -90,9 +90,11 @@ export function HeroReveal() {
 
   const seamScaleX = useTransform(scrollYProgress, [0.04, 0.16], [0, 1]);
 
-  // Fugate-style depth drift (Motion Bible §4): the plate moves at its own
-  // slow velocity, independent of the phase text crossfades beside it.
-  const plateParallaxY = useTransform(scrollYProgress, [0, 1], [0, -48]);
+  // Fugate-style depth drift (Motion Bible §4): the background stage moves
+  // at its own slow velocity, independent of the phase text overlay above
+  // it. The stage wrapper is oversized (-inset-y-16) so this drift never
+  // exposes a gap at the top/bottom edge.
+  const stageParallaxY = useTransform(scrollYProgress, [0, 1], [0, -48]);
   const cueOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
 
   useMotionValueEvent(scrollYProgress, "change", (value) => {
@@ -133,14 +135,14 @@ export function HeroReveal() {
   }, []);
 
   useEffect(() => {
-    const plate = plateRef.current;
+    const stage = stageRef.current;
     const canvas = canvasRef.current;
-    if (!plate || !canvas) return;
+    if (!stage || !canvas) return;
 
     dprRef.current = getMaxDpr();
 
     const resize = () => {
-      const rect = plate.getBoundingClientRect();
+      const rect = stage.getBoundingClientRect();
       const dpr = dprRef.current;
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
@@ -151,7 +153,7 @@ export function HeroReveal() {
 
     resize();
     const observer = new ResizeObserver(resize);
-    observer.observe(plate);
+    observer.observe(stage);
     return () => observer.disconnect();
   }, [ready]);
 
@@ -177,8 +179,53 @@ export function HeroReveal() {
   return (
     <section ref={sectionRef} className="relative min-h-[440vh] w-full bg-[#131e15]">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-10 px-8 md:grid-cols-[0.4fr_0.6fr] md:gap-16 md:px-14">
-          <div className="relative min-h-[22rem] md:min-h-[26rem]">
+        {/*
+          Full-bleed stage: the frame sequence fills the entire viewport,
+          not a contained plate. Oversized -inset-y-16 so the Fugate
+          parallax drift never exposes a gap at the top/bottom edge.
+        */}
+        <motion.div
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: prefersReducedMotion ? 0.01 : DUR.epic,
+            ease: EASE_LUXE,
+          }}
+          style={{ y: stageParallaxY }}
+          className="absolute -inset-y-16 inset-x-0"
+        >
+          <div ref={stageRef} className="h-full w-full">
+            {/*
+              Desaturate + darken wash (item 6): the sequence is rendered on
+              a light studio-pastel gradient, brighter/pinker than the
+              forest-green direction. Toned down via filter until the
+              Blender re-render lands — not a permanent color decision.
+            */}
+            <canvas
+              ref={canvasRef}
+              className="h-full w-full saturate-[0.55] brightness-[0.8]"
+              aria-hidden
+            />
+          </div>
+        </motion.div>
+
+        {/* Readability gradient (item 3): solid forest-green on the left
+            where the text sits, fading to transparent on the right where
+            the box/ribbon sits — not a flat wash over the whole frame. */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#131e15] via-[#131e15]/75 via-[45%] to-transparent"
+          aria-hidden
+        />
+        {/* Mobile: box/ribbon crop loses most of its side negative space,
+            so a bottom-heavy scrim backs the vertically-centered text
+            instead (item 7). */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#131e15] via-[#131e15]/50 to-transparent md:hidden"
+          aria-hidden
+        />
+
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-8 md:px-14">
+          <div className="relative min-h-[22rem] w-full max-w-lg md:min-h-[26rem]">
             <AnimatePresence mode="sync">
               {phase === 1 && (
                 <motion.div
@@ -239,30 +286,6 @@ export function HeroReveal() {
               )}
             </AnimatePresence>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: prefersReducedMotion ? 0.01 : DUR.epic,
-              ease: EASE_LUXE,
-            }}
-            style={{ y: plateParallaxY }}
-            className="mx-auto"
-          >
-            {/*
-              Contained "plate" rather than full-bleed: the frame sequence is
-              rendered on a light studio gradient (pending its own Blender
-              re-render pass), so it sits inside a bordered frame against the
-              forest-green environment instead of painting the whole section.
-            */}
-            <div
-              ref={plateRef}
-              className="relative aspect-[2/3] w-full max-w-sm overflow-hidden border border-gold/30 bg-champagne-sand shadow-[0_20px_60px_rgba(0,0,0,0.4)] md:max-w-md"
-            >
-              <canvas ref={canvasRef} className="h-full w-full" aria-hidden />
-            </div>
-          </motion.div>
         </div>
 
         <motion.div
