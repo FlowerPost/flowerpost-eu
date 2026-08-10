@@ -1,15 +1,15 @@
 export function Footer() {
   return (
-    <footer className="bg-ink px-8 py-16 text-ribbon md:px-14">
-      <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-center">
+    <footer className="border-t border-ivory/10 bg-ink px-8 py-20 text-ribbon md:px-14 md:py-28">
+      <div className="mx-auto flex max-w-7xl flex-col justify-between gap-10 md:flex-row md:items-end">
         <div>
-          <div className="tf-headline mb-2 text-ivory" style={{ fontSize: "1.5rem" }}>
+          <div className="tf-headline mb-3 text-ivory" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
             FLOWERPOST
           </div>
           <div className="tf-mono text-gold">Bulgaria</div>
         </div>
 
-        <div className="tf-mono text-ribbon/70">
+        <div className="tf-mono text-mist">
           © {new Date().getFullYear()} Flowerpost · Всички права запазени
         </div>
       </div>

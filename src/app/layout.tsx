@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body
-        className="min-h-full flex flex-col bg-ivory text-ink"
+        className="min-h-full flex flex-col bg-ink text-ivory"
         suppressHydrationWarning
       >
         <SmoothScrollProvider>{children}</SmoothScrollProvider>

@@ -8,6 +8,7 @@
   --color-bordeaux: #5c1a24;
   --color-ink: #2b2420;
   --color-stone: #6b6259;
+  --color-mist: #c9bfaf;
 }
 
 @theme inline {
@@ -18,6 +19,7 @@
   --color-bordeaux: var(--color-bordeaux);
   --color-ink: var(--color-ink);
   --color-stone: var(--color-stone);
+  --color-mist: var(--color-mist);
   --font-playfair: var(--font-playfair);
   --font-space-mono: var(--font-space-mono);
 }
@@ -27,38 +29,39 @@ html {
 }
 
 body {
-  background: var(--color-ivory);
-  color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-ivory);
   font-family: var(--font-playfair), Georgia, serif;
 }
 
 @layer components {
   .tf-display {
     font-family: var(--font-playfair);
-    font-size: clamp(2.75rem, 6vw, 6rem);
-    font-weight: 500;
-    line-height: 1.02;
-    letter-spacing: -0.01em;
+    font-size: clamp(4rem, 7vw, 8rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
   }
 
   .tf-headline {
     font-family: var(--font-playfair);
-    font-size: clamp(1.75rem, 3.5vw, 3rem);
-    font-weight: 500;
-    line-height: 1.15;
+    font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
   }
 
   .tf-quote {
     font-family: var(--font-playfair);
     font-style: italic;
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-size: clamp(1.375rem, 2.2vw, 2rem);
     line-height: 1.4;
   }
 
   .tf-mono {
     font-family: var(--font-space-mono);
     font-size: 11px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
   }
 
@@ -66,15 +69,15 @@ body {
     font-family: system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.75;
-    color: var(--color-stone);
+    color: var(--color-mist);
   }
 
   .btn-bordeaux {
     font-family: var(--font-space-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    padding: 1rem 2rem;
+    padding: 1.25rem 2.75rem;
     background-color: var(--color-bordeaux);
     color: var(--color-ivory);
     transition: opacity 200ms ease;
@@ -85,10 +88,10 @@ body {
 
   .btn-gold-outline {
     font-family: var(--font-space-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    padding: 1rem 2rem;
+    padding: 1.25rem 2.75rem;
     border: 1px solid var(--color-gold);
     color: var(--color-gold);
     background-color: transparent;

@@ -7,8 +7,8 @@ const viewport = { once: true, margin: "-15% 0px -15% 0px" } as const;
 
 export function IntroStatement() {
   return (
-    <section className="relative bg-champagne-sand py-32 md:py-48">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-10 px-8 md:grid-cols-[0.38fr_0.62fr] md:gap-x-16 md:px-14">
+    <section className="relative bg-ink py-28 md:py-40 lg:py-56">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-10 px-8 md:grid-cols-[0.32fr_0.68fr] md:gap-x-16 md:px-14">
         <motion.span
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -19,17 +19,17 @@ export function IntroStatement() {
           Flowerpost · Bulgaria
         </motion.span>
 
-        <div className="max-w-xl">
+        <div className="max-w-2xl">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewport}
             transition={{ duration: DUR.base, ease: EASE_LUXE, delay: 0.1 }}
-            className="tf-display mb-8 text-ink"
+            className="tf-display mb-10 text-ivory"
           >
             Ритуалът
             <br />
-            <span className="text-bordeaux">на цветята</span>
+            <span className="text-ribbon">на цветята</span>
           </motion.h1>
 
           <motion.p
@@ -37,7 +37,7 @@ export function IntroStatement() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewport}
             transition={{ duration: DUR.base, ease: EASE_LUXE, delay: 0.22 }}
-            className="tf-body mb-10 max-w-md"
+            className="tf-body mb-12 max-w-md"
           >
             Рози, берани тази сутрин от сърцето на България. Доставени в кутия,
             направена да се отваря бавно.

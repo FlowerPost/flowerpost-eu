@@ -12,40 +12,45 @@ const paragraphs = [
 
 export function StoryScene() {
   return (
-    <section id="story" className="bg-ivory px-8 py-32 md:px-14 md:py-48">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 md:grid-cols-[0.4fr_0.6fr]">
-        <motion.div {...fadeUp}>
-          <span className="tf-mono mb-6 flex items-center gap-3 text-bordeaux">
-            <span>01</span>
-            <span className="h-px flex-1 bg-gold/30" />
-            Историята
-          </span>
-          <h2 className="tf-headline mb-10 max-w-xs text-ink">
-            Не декорация. <em className="text-bordeaux">Ритуал.</em>
+    <section id="story" className="bg-ink px-8 py-28 md:px-14 md:py-40 lg:py-56">
+      <div className="mx-auto max-w-7xl">
+        <motion.div {...fadeUp} className="mb-16 md:mb-20">
+          <span className="tf-mono mb-6 block text-gold">Историята</span>
+          <h2 className="tf-headline max-w-3xl text-ivory">
+            Не декорация. <em className="text-ribbon">Ритуал.</em>
           </h2>
-
-          <div className="relative aspect-[3/2] w-full overflow-hidden border border-gold/25">
-            <Image
-              src="/images/provenance-card.jpg"
-              alt="Provenance картичка FLOWERPOST"
-              fill
-              sizes="(min-width: 768px) 30rem, 90vw"
-              className="object-cover"
-            />
-          </div>
         </motion.div>
 
-        <div className="flex flex-col gap-10">
-          {paragraphs.map((p, i) => (
-            <motion.p
-              key={p}
-              {...fadeUp}
-              transition={{ ...fadeUp.transition, delay: i * 0.1 }}
-              className="tf-quote max-w-xl text-ink"
-            >
-              {p}
-            </motion.p>
-          ))}
+        <div className="flex flex-col gap-14 md:flex-row md:items-start md:gap-20">
+          <div className="flex flex-1 flex-col gap-8">
+            {paragraphs.map((p, i) => (
+              <motion.p
+                key={p}
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: i * 0.1 }}
+                className="tf-quote max-w-xl text-mist"
+              >
+                {p}
+              </motion.p>
+            ))}
+          </div>
+
+          <motion.figure
+            {...fadeUp}
+            transition={{ ...fadeUp.transition, delay: 0.15 }}
+            className="w-full shrink-0 md:w-64"
+          >
+            <div className="relative aspect-[3/2] overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.35)]">
+              <Image
+                src="/images/provenance-card.jpg"
+                alt="Provenance картичка FLOWERPOST"
+                fill
+                sizes="(min-width: 768px) 16rem, 90vw"
+                className="object-cover"
+              />
+            </div>
+            <figcaption className="tf-mono mt-4 text-mist">Provenance карта</figcaption>
+          </motion.figure>
         </div>
       </div>
     </section>
