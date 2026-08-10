@@ -209,18 +209,20 @@ export function HeroReveal() {
           </div>
         </motion.div>
 
-        {/* Readability gradient (item 3): solid forest-green on the left
-            where the text sits, fading to transparent on the right where
-            the box/ribbon sits — not a flat wash over the whole frame. */}
+        {/* Readability gradient: neutral black scrim (not green — espresso
+            ink was tried but is actually lighter than the forest-green
+            base, which weakened contrast) on the left where the text
+            sits, fading to transparent on the right where the box/ribbon
+            sits — not a flat wash over the whole frame. */}
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#131e15] via-[#131e15]/75 via-[45%] to-transparent"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 via-[45%] to-transparent"
           aria-hidden
         />
         {/* Mobile: box/ribbon crop loses most of its side negative space,
             so a bottom-heavy scrim backs the vertically-centered text
-            instead (item 7). */}
+            instead. */}
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#131e15] via-[#131e15]/50 to-transparent md:hidden"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-transparent md:hidden"
           aria-hidden
         />
 
