@@ -32,10 +32,17 @@ farmhouse естетика). Vol.2 е репозиционирането към 
 6. **TrustScene** — provenance/farms доверие блок
 7. **Footer** — минимален, тъмен
 
+## Замразени routes (НИКОГА не преименувай/мести/трий)
+- **`/otzivi`** (`src/app/otzivi/page.tsx`) — QR код от 500 отпечатани provenance
+  картички сочи буквално към `https://flowerpost.eu/otzivi`. Ако този път се
+  промени, всички отпечатани карти се чупят безвъзвратно — няма reprint
+  наполовина тираж. Всяка бъдеща задача (redesign, route reorganize,
+  migration) трябва да провери този списък първо.
+
 ## Извън обхват (не прави без изрична задача)
 - Supabase queries, email capture backend, реални форми със submit logic
 - Three.js/WebGL 3D рендъринг (виж [[__3D_BIBLE.md]] §5 за критериите за ескалация)
-- Multi-page routing отвъд единствен landing route
+- Multi-page routing отвъд landing route + замразените routes по-горе
 - Анализ или преизползване на код от Vol.1 освен ако не е поискано изрично
 
 ## Работен режим
