@@ -12,13 +12,13 @@ import Link from "next/link";
 // warning at the doctrine level.
 // ============================================================================
 
-const GOOGLE_REVIEW_URL =
-  // TODO: replace with the real Google Business review link once the
-  // FLOWERPOST Google Business profile exists — format is typically
-  // https://g.page/r/XXXXXXXX/review or https://maps.app.goo.gl/XXXXXXXX.
-  // This search-query fallback still takes the customer somewhere useful
-  // in the meantime, rather than a dead "#" link on a printed card.
-  "https://www.google.com/search?q=Flowerpost+Bulgaria+reviews";
+const REVIEW_FORM_URL =
+  // Tally.so review form. Deliberately not Google Business: the company
+  // isn't registered yet, and Google Business profile creation has its
+  // own verification friction this startup doesn't need right now.
+  // This route ("/otzivi") itself stays frozen either way — only this one
+  // constant would need to change if the form ever moves.
+  "https://tally.so/r/ODq7X8";
 
 export const metadata: Metadata = {
   title: "Отзиви — FLOWERPOST",
@@ -42,12 +42,12 @@ export default function OtziviPage() {
       </p>
 
       <a
-        href={GOOGLE_REVIEW_URL}
+        href={REVIEW_FORM_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="btn-bordeaux"
       >
-        Остави отзив в Google
+        Сподели отзив
       </a>
 
       <Link href="/" className="tf-mono mt-16 text-stone transition-colors hover:text-gold">
