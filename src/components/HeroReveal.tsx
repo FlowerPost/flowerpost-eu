@@ -221,11 +221,11 @@ export function HeroReveal() {
                   transition={phaseTransition}
                   className="absolute inset-0 flex flex-col justify-center"
                 >
-                  <span className="tf-mono mb-6 text-bordeaux">Flowerpost · Bulgaria</span>
-                  <h1 className="tf-display mb-8 text-gold">
+                  <span className="tf-mono mb-6 text-champagne-sand">Flowerpost · Bulgaria</span>
+                  <h1 className="tf-display mb-8 text-ivory">
                     Преди отварянето —
                     <br />
-                    <span className="text-gold/70">тишина.</span>
+                    <span className="text-ribbon">тишина.</span>
                   </h1>
                   <motion.span
                     style={{ scaleX: seamScaleX }}
@@ -244,8 +244,8 @@ export function HeroReveal() {
                   transition={phaseTransition}
                   className="absolute inset-0 flex flex-col justify-center"
                 >
-                  <span className="tf-mono mb-6 text-bordeaux">Отваряне</span>
-                  <p className="tf-quote max-w-sm text-bordeaux">
+                  <span className="tf-mono mb-6 text-champagne-sand">Отваряне</span>
+                  <p className="tf-quote max-w-sm text-ivory/90">
                     Панделката отстъпва. Капакът се повдига.
                   </p>
                 </motion.div>
@@ -260,9 +260,9 @@ export function HeroReveal() {
                   transition={phaseTransition}
                   className="absolute inset-0 flex flex-col justify-center"
                 >
-                  <span className="tf-mono mb-6 text-bordeaux">Разкритие</span>
-                  <h2 className="tf-headline mb-8 text-bordeaux">
-                    Розите, <em className="text-bordeaux/70">разкрити</em>.
+                  <span className="tf-mono mb-6 text-champagne-sand">Разкритие</span>
+                  <h2 className="tf-headline mb-8 text-ivory">
+                    Розите, <em className="text-ribbon">разкрити</em>.
                   </h2>
                   <a href="#product" className="btn-bordeaux inline-block w-fit">
                     Разгледай кутиите
