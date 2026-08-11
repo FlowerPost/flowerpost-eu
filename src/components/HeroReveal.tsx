@@ -209,23 +209,6 @@ export function HeroReveal() {
           </div>
         </motion.div>
 
-        {/* Readability gradient: neutral black scrim (not green — espresso
-            ink was tried but is actually lighter than the forest-green
-            base, which weakened contrast) on the left where the text
-            sits, fading to transparent on the right where the box/ribbon
-            sits — not a flat wash over the whole frame. */}
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 via-[45%] to-transparent"
-          aria-hidden
-        />
-        {/* Mobile: box/ribbon crop loses most of its side negative space,
-            so a bottom-heavy scrim backs the vertically-centered text
-            instead. */}
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-transparent md:hidden"
-          aria-hidden
-        />
-
         <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-8 md:px-14">
           <div className="relative min-h-[22rem] w-full max-w-lg md:min-h-[26rem]">
             <AnimatePresence mode="sync">
@@ -238,11 +221,11 @@ export function HeroReveal() {
                   transition={phaseTransition}
                   className="absolute inset-0 flex flex-col justify-center"
                 >
-                  <span className="tf-mono mb-6 text-champagne-sand">Flowerpost · Bulgaria</span>
-                  <h1 className="tf-display mb-8 text-ivory">
+                  <span className="tf-mono mb-6 text-bordeaux">Flowerpost · Bulgaria</span>
+                  <h1 className="tf-display mb-8 text-bordeaux">
                     Преди отварянето —
                     <br />
-                    <span className="text-ribbon">тишина.</span>
+                    <span className="text-bordeaux/70">тишина.</span>
                   </h1>
                   <motion.span
                     style={{ scaleX: seamScaleX }}
@@ -261,8 +244,8 @@ export function HeroReveal() {
                   transition={phaseTransition}
                   className="absolute inset-0 flex flex-col justify-center"
                 >
-                  <span className="tf-mono mb-6 text-champagne-sand">Отваряне</span>
-                  <p className="tf-quote max-w-sm text-ivory/90">
+                  <span className="tf-mono mb-6 text-bordeaux">Отваряне</span>
+                  <p className="tf-quote max-w-sm text-bordeaux">
                     Панделката отстъпва. Капакът се повдига.
                   </p>
                 </motion.div>
@@ -277,9 +260,9 @@ export function HeroReveal() {
                   transition={phaseTransition}
                   className="absolute inset-0 flex flex-col justify-center"
                 >
-                  <span className="tf-mono mb-6 text-champagne-sand">Разкритие</span>
-                  <h2 className="tf-headline mb-8 text-ivory">
-                    Розите, <em className="text-ribbon">разкрити</em>.
+                  <span className="tf-mono mb-6 text-bordeaux">Разкритие</span>
+                  <h2 className="tf-headline mb-8 text-bordeaux">
+                    Розите, <em className="text-bordeaux/70">разкрити</em>.
                   </h2>
                   <a href="#product" className="btn-bordeaux inline-block w-fit">
                     Разгледай кутиите
