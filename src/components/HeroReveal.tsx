@@ -222,10 +222,10 @@ export function HeroReveal() {
                   className="absolute inset-0 flex flex-col justify-center"
                 >
                   <span className="tf-mono mb-6 text-bordeaux">Flowerpost · Bulgaria</span>
-                  <h1 className="tf-display mb-8 text-bordeaux">
+                  <h1 className="tf-display mb-8 text-gold">
                     Преди отварянето —
                     <br />
-                    <span className="text-bordeaux/70">тишина.</span>
+                    <span className="text-gold/70">тишина.</span>
                   </h1>
                   <motion.span
                     style={{ scaleX: seamScaleX }}
