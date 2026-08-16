@@ -19,10 +19,14 @@ import { EASE_LUXE, DUR } from "@/lib/motion";
 // white copy offset up-left supplies the lit bevel edge.
 export function LogoSeam() {
   return (
-    // overflow-hidden: the halo below deliberately bleeds past this element's
-    // box, and without clipping it pushed the whole document 48px wider than
-    // a 375px viewport — a horizontal scrollbar on every phone.
-    <div className="relative z-10 -mt-[8vh] mb-4 flex justify-center overflow-hidden px-6 sm:px-8 md:-mt-[15vh]">
+    // The warm halo that used to sit behind the mark is gone. It bled past
+    // this element's box, which forced an overflow-hidden to stop it widening
+    // the document on phones — and that clip then sliced the blur into a
+    // hard-edged rectangle visible behind the logo. The Hero canvas mask
+    // already dissolves the seam on its own, so the halo was doing no work
+    // that justified the artifact. Removing it fixes the rectangle and the
+    // overflow together, and no clipping is needed.
+    <div className="relative z-10 -mt-[8vh] mb-4 flex translate-y-[4mm] justify-center px-6 sm:px-8 md:-mt-[15vh]">
       <motion.div
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -30,17 +34,6 @@ export function LogoSeam() {
         transition={{ duration: DUR.base, ease: EASE_LUXE }}
         className="relative w-full max-w-3xl"
       >
-        {/* Warm halo — gives the mark a surface to sit on and further softens
-            the tonal step across the seam. */}
-        <div
-          className="pointer-events-none absolute -inset-x-8 -inset-y-10 rounded-[50%] blur-3xl sm:-inset-x-20 sm:-inset-y-12"
-          style={{
-            backgroundImage:
-              "radial-gradient(ellipse, rgba(247,241,232,0.85), rgba(237,225,206,0.3) 55%, transparent 75%)",
-          }}
-          aria-hidden
-        />
-
         {/* Wordmark + rose only. The tagline used to live inside this SVG and
             therefore scaled with it: at a 311px-wide phone container that put
             it at 6.7px — decorative noise rather than legible type. It is now
