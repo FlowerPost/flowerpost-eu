@@ -191,7 +191,16 @@ export function HeroReveal() {
   });
 
   return (
-    <section ref={sectionRef} className="relative min-h-[1320vh] w-full">
+    // 1320vh is the deliberate slow-reveal pacing for pointer scrolling, but
+    // it costs ~11.7 phone screens of thumb-swiping to get through the box
+    // opening — the sequence stops being a reveal and becomes an obstacle.
+    // Phones get 2/3 of that; the frame mapping is proportional to section
+    // height, so the whole animation still plays out in full, just over less
+    // travel. Desktop pacing is unchanged.
+    <section
+      ref={sectionRef}
+      className="relative min-h-[860vh] w-full md:min-h-[1320vh]"
+    >
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/*
           Full-bleed stage: the frame sequence fills the entire viewport,

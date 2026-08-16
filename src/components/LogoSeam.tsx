@@ -19,7 +19,10 @@ import { EASE_LUXE, DUR } from "@/lib/motion";
 // white copy offset up-left supplies the lit bevel edge.
 export function LogoSeam() {
   return (
-    <div className="relative z-10 -mt-[12vh] mb-4 flex justify-center px-8 md:-mt-[15vh]">
+    // overflow-hidden: the halo below deliberately bleeds past this element's
+    // box, and without clipping it pushed the whole document 48px wider than
+    // a 375px viewport — a horizontal scrollbar on every phone.
+    <div className="relative z-10 -mt-[8vh] mb-4 flex justify-center overflow-hidden px-6 sm:px-8 md:-mt-[15vh]">
       <motion.div
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -30,7 +33,7 @@ export function LogoSeam() {
         {/* Warm halo — gives the mark a surface to sit on and further softens
             the tonal step across the seam. */}
         <div
-          className="pointer-events-none absolute -inset-x-20 -inset-y-12 rounded-[50%] blur-3xl"
+          className="pointer-events-none absolute -inset-x-8 -inset-y-10 rounded-[50%] blur-3xl sm:-inset-x-20 sm:-inset-y-12"
           style={{
             backgroundImage:
               "radial-gradient(ellipse, rgba(247,241,232,0.85), rgba(237,225,206,0.3) 55%, transparent 75%)",
@@ -38,11 +41,15 @@ export function LogoSeam() {
           aria-hidden
         />
 
+        {/* Wordmark + rose only. The tagline used to live inside this SVG and
+            therefore scaled with it: at a 311px-wide phone container that put
+            it at 6.7px — decorative noise rather than legible type. It is now
+            HTML below, so it holds the site's own text size at every width. */}
         <svg
-          viewBox="0 0 1200 340"
+          viewBox="0 0 1200 268"
           className="relative w-full"
           role="img"
-          aria-label="FLOWERPOST — made to brighten your day"
+          aria-label="FLOWERPOST"
         >
           <defs>
             {/* Banded metallic gold. The mid-tone dips are specular
@@ -83,26 +90,6 @@ export function LogoSeam() {
               />
             </filter>
 
-            {/* Bordeaux cast for the tagline — the small caps sit on a light
-                background at a hairline weight, so a neutral grey shadow just
-                muddies them. A warm bordeaux offset separates the letters from
-                the page and ties them to the brand's accent colour. */}
-            <filter id="fpTagline" x="-15%" y="-120%" width="130%" height="360%">
-              <feDropShadow
-                dx="0"
-                dy="1.5"
-                stdDeviation="0.6"
-                floodColor="#5c1a24"
-                floodOpacity="0.75"
-              />
-              <feDropShadow
-                dx="0"
-                dy="3"
-                stdDeviation="4"
-                floodColor="#5c1a24"
-                floodOpacity="0.4"
-              />
-            </filter>
           </defs>
 
           <g filter="url(#fpLift)">
@@ -186,25 +173,20 @@ export function LogoSeam() {
               <path d="M2,78 C22,60 50,60 63,70 C50,92 20,98 2,78 Z" />
             </g>
 
-            {/* --- tagline ---------------------------------------------- */}
-            <text
-              x="600"
-              y="300"
-              textAnchor="middle"
-              fill="url(#fpGoldSoft)"
-              filter="url(#fpTagline)"
-              style={{
-                fontFamily: "var(--font-playfair), sans-serif",
-                textTransform: "none",
-              }}
-              fontSize="26"
-              fontWeight={500}
-              letterSpacing="10"
-            >
-              MADE TO BRIGHTEN YOUR DAY
-            </text>
           </g>
         </svg>
+
+        {/* Tagline as HTML: holds the site's own small-text size at every
+            viewport instead of shrinking with the SVG. The bordeaux cast is
+            the same idea as the SVG filter it replaces — a warm offset reads
+            as separation on this light background where neutral grey just
+            muddies hairline caps. */}
+        <div
+          className="tf-mono relative mt-3 text-center text-[var(--color-gold)] sm:mt-4"
+          style={{ textShadow: "0 1px 0 rgba(92,26,36,0.75), 0 2px 6px rgba(92,26,36,0.35)" }}
+        >
+          Made to brighten your day
+        </div>
       </motion.div>
     </div>
   );

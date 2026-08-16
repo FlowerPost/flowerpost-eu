@@ -58,7 +58,7 @@ export function ProductScene() {
               key={tier.id}
               {...fadeUp}
               transition={{ ...fadeUp.transition, delay: i * 0.1 }}
-              className="relative bg-ivory p-10"
+              className="relative bg-ivory p-7 sm:p-10"
             >
               {tier.badge && (
                 <span className="tf-mono absolute -top-3 left-8 bg-bordeaux px-3 py-1 text-ivory">
@@ -70,21 +70,26 @@ export function ProductScene() {
                 {tier.name}
               </h3>
 
-              <div className="mb-10">
+              {/* baseline-aligned inline row so "лв / кутия" trails the
+                  numeral instead of wrapping under it mid-phrase */}
+              <div className="mb-10 flex flex-wrap items-baseline gap-x-2">
                 <span className="tf-display text-bordeaux" style={{ fontSize: "3.5rem" }}>
                   {tier.price}
                 </span>
-                <span className="tf-mono ml-2 text-stone">лв / кутия</span>
+                <span className="tf-mono whitespace-nowrap text-stone">лв / кутия</span>
               </div>
 
+              {/* gap-4 + right-aligned value: without a floor on the gap the
+                  wrapped origin ("Тракийска низина") butts straight into its
+                  label at phone widths and reads as one run-on word. */}
               <div className="mb-10 space-y-2 border-t border-gold/20 pt-6">
-                <div className="flex justify-between font-[var(--font-space-mono)] text-xs">
-                  <span className="text-stone">Стръкове</span>
-                  <span className="text-ink">{tier.stems}</span>
+                <div className="flex justify-between gap-4 font-[var(--font-space-mono)] text-xs">
+                  <span className="shrink-0 text-stone">Стръкове</span>
+                  <span className="text-right text-ink">{tier.stems}</span>
                 </div>
-                <div className="flex justify-between font-[var(--font-space-mono)] text-xs">
-                  <span className="text-stone">Произход</span>
-                  <span className="text-ink">{tier.origin}</span>
+                <div className="flex justify-between gap-4 font-[var(--font-space-mono)] text-xs">
+                  <span className="shrink-0 text-stone">Произход</span>
+                  <span className="text-right text-ink">{tier.origin}</span>
                 </div>
               </div>
 

@@ -219,3 +219,28 @@ body {
     border-color: color-mix(in srgb, var(--color-gold) 35%, transparent);
   }
 }
+
+/* Phones: 0.22em tracking on uppercase Cyrillic runs roughly 40% wider than
+   the same copy set normally, which is what pushes labels into their values
+   and breaks button text onto a second line at 375px. The look is preserved,
+   just tightened to what the width can actually carry. */
+@media (max-width: 640px) {
+  body,
+  .tf-mono,
+  .tf-body,
+  .tf-quote,
+  .btn-bordeaux,
+  .btn-gold-outline {
+    letter-spacing: 0.11em;
+  }
+
+  .tf-display,
+  .tf-headline {
+    letter-spacing: 0.06em;
+  }
+
+  .btn-bordeaux,
+  .btn-gold-outline {
+    padding: 1rem 1.5rem;
+  }
+}
