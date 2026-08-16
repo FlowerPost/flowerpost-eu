@@ -126,29 +126,39 @@ body {
     color: var(--color-stone);
   }
 
-  /* Shared 3D mechanics for every CTA button — color/fill stays per-variant
-     below, but the lift/press physics live in one place so no button drifts
-     out of sync with the others. */
+  /* Shared shape and motion for every CTA. The previous version stacked a
+     vertical gradient, a hard 1px "extrude" edge and a heavy drop shadow —
+     that combination is what read as stiff and pasted-on. These are pill
+     shaped, filled at 70% so the page shows through, and rely on a backdrop
+     blur for separation instead of a hard edge. The blur matters: a
+     translucent fill over the drifting background and the video sections
+     would otherwise let busy imagery read straight through the label. */
   .btn-bordeaux,
   .btn-gold-outline {
     position: relative;
+    display: inline-block;
     font-family: "Montserrat", var(--font-space-mono), sans-serif;
-    /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
-     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
-     text role on the page sits at the same optical size as the brand mark. */
-  font-size: 16.5px;
+    font-size: 16.5px;
     font-weight: 500;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    padding: 1.25rem 2.75rem;
-    border-radius: 6px;
+    /* Pill padding is deliberately tighter than the old rectangle's 2.75rem:
+       these also run full-width inside the pricing cards, where horizontal
+       padding eats the text's own space and pushed "Избери Classic" onto a
+       second line in the narrower column. */
+    padding: 1.1rem 2rem;
+    border-radius: 9999px;
+    /* Standard property only — writing the -webkit- alias alongside it made
+       the minifier dedupe the pair down to just the prefixed one, leaving
+       backdrop-filter unset. Lightning CSS adds prefixes per browserslist. */
+    backdrop-filter: blur(10px) saturate(135%);
     transform: translateY(0);
     transition:
-      transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 160ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 200ms ease,
-      color 200ms ease,
-      opacity 200ms ease;
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 240ms ease,
+      border-color 240ms ease,
+      color 240ms ease;
   }
   .btn-bordeaux:hover,
   .btn-gold-outline:hover {
@@ -158,61 +168,58 @@ body {
   .btn-gold-outline:active {
     transform: translateY(1px);
   }
+  .btn-bordeaux:focus-visible,
+  .btn-gold-outline:focus-visible {
+    outline: 2px solid var(--color-bordeaux);
+    outline-offset: 3px;
+  }
 
+  /* Bordeaux at 70% over the page's champagne tone lands near rgb(136,86,87);
+     ivory text on that measures ~5.2:1, so the translucency stays the right
+     side of AA rather than trading legibility for the effect. */
   .btn-bordeaux {
-    background-image: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-bordeaux) 82%, white) 0%,
-      var(--color-bordeaux) 55%,
-      color-mix(in srgb, var(--color-bordeaux) 82%, black) 100%
-    );
-    border: 1px solid color-mix(in srgb, var(--color-bordeaux) 65%, black);
+    background-color: color-mix(in srgb, var(--color-bordeaux) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-bordeaux) 45%, transparent);
     color: var(--color-ivory);
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, white 25%, transparent),
-      0 1px 0 color-mix(in srgb, var(--color-bordeaux) 55%, black),
-      0 6px 16px color-mix(in srgb, var(--color-ink) 30%, transparent);
+      inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
+      0 4px 14px color-mix(in srgb, var(--color-ink) 16%, transparent);
   }
   .btn-bordeaux:hover {
+    background-color: color-mix(in srgb, var(--color-bordeaux) 85%, transparent);
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, white 30%, transparent),
-      0 3px 0 color-mix(in srgb, var(--color-bordeaux) 55%, black),
-      0 12px 24px color-mix(in srgb, var(--color-ink) 35%, transparent);
+      inset 0 1px 0 color-mix(in srgb, white 28%, transparent),
+      0 10px 24px color-mix(in srgb, var(--color-ink) 22%, transparent);
   }
   .btn-bordeaux:active {
     box-shadow:
-      inset 0 1px 2px color-mix(in srgb, black 25%, transparent),
-      0 0 0 color-mix(in srgb, var(--color-bordeaux) 55%, black),
-      0 2px 6px color-mix(in srgb, var(--color-ink) 25%, transparent);
+      inset 0 1px 3px color-mix(in srgb, black 18%, transparent),
+      0 2px 8px color-mix(in srgb, var(--color-ink) 14%, transparent);
   }
 
+  /* The quiet variant: ivory at 70% with a gold hairline. Bordeaux label on
+     that blend stays well past AA, and it holds up over the video sections
+     where a fully transparent button would disappear. */
   .btn-gold-outline {
-    background-image: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-ivory) 95%, transparent) 0%,
-      color-mix(in srgb, var(--color-champagne-sand) 70%, transparent) 100%
-    );
-    border: 1px solid var(--color-gold);
+    background-color: color-mix(in srgb, var(--color-ivory) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-gold) 65%, transparent);
     color: var(--color-bordeaux);
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, white 50%, transparent),
-      0 1px 0 color-mix(in srgb, var(--color-gold) 45%, transparent),
-      0 6px 16px color-mix(in srgb, var(--color-ink) 12%, transparent);
+      inset 0 1px 0 color-mix(in srgb, white 45%, transparent),
+      0 4px 14px color-mix(in srgb, var(--color-ink) 10%, transparent);
   }
   .btn-gold-outline:hover {
-    background-color: var(--color-gold);
-    background-image: none;
+    background-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+    border-color: color-mix(in srgb, var(--color-gold) 85%, transparent);
     color: var(--color-ivory);
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, white 30%, transparent),
-      0 3px 0 color-mix(in srgb, var(--color-gold) 60%, black),
-      0 12px 22px color-mix(in srgb, var(--color-ink) 20%, transparent);
+      inset 0 1px 0 color-mix(in srgb, white 28%, transparent),
+      0 10px 22px color-mix(in srgb, var(--color-ink) 18%, transparent);
   }
   .btn-gold-outline:active {
     box-shadow:
-      inset 0 1px 2px color-mix(in srgb, black 15%, transparent),
-      0 0 0 color-mix(in srgb, var(--color-gold) 60%, black),
-      0 2px 6px color-mix(in srgb, var(--color-ink) 15%, transparent);
+      inset 0 1px 3px color-mix(in srgb, black 14%, transparent),
+      0 2px 8px color-mix(in srgb, var(--color-ink) 12%, transparent);
   }
 
   .hairline {
