@@ -28,7 +28,7 @@ const tiers: Tier[] = [
 
 export function ProductScene() {
   return (
-    <section id="product" className="bg-ink py-28 md:py-40 lg:py-56">
+    <section id="product" className="py-28 md:py-40 lg:py-56">
       <motion.div {...fadeUp} className="relative aspect-[4/5] w-full overflow-hidden md:aspect-[16/9]">
         <Image
           src="/images/box-open-roses.jpg"

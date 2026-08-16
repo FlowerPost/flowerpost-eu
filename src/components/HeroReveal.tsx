@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  AnimatePresence,
   motion,
   useMotionValueEvent,
   useReducedMotion,
@@ -16,15 +15,15 @@ const FRAME_PATH = (n: number) =>
   `/sequences/box-reveal/frame_${String(n).padStart(3, "0")}.webp`;
 const STATIC_FRAME_PROGRESS = 0.85;
 
-// Phase text/CTA crossfades are timed to where the authored sequence itself
-// acts: the box holds its closed pose through ~frame 90 (progress .37), lid
-// separation and rose emergence happens ~frame 90-140, bloom settles by
-// ~frame 200. These boundaries track that footage, not an even three-way split.
-const PHASE_1_END = 0.36;
-const PHASE_2_END = 0.58;
-
-const DPR_MAX_TOUCH = 1.5;
-const DPR_MAX_DEFAULT = 2;
+// Capped at the display's actual pixel density (up from a flat 1.5/2) so the
+// canvas backing store is as sharp as the screen can show — the source
+// frames are a fixed 668x990 (that's the full delivered render, confirmed
+// against the original sequence-final export, not a compressed copy), so
+// this can't add real detail, but a higher-resolution backing store gives
+// the smoothing filter in drawCover more pixels to interpolate into, which
+// reads as materially less blurry on retina/high-DPI screens.
+const DPR_MAX_TOUCH = 2.5;
+const DPR_MAX_DEFAULT = 3;
 
 function getMaxDpr(): number {
   if (typeof window === "undefined") return DPR_MAX_DEFAULT;
@@ -63,6 +62,8 @@ function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, cw: num
   }
 
   ctx.clearRect(0, 0, cw, ch);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
   ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
 }
 
@@ -75,12 +76,6 @@ export function HeroReveal() {
   const dprRef = useRef(1);
 
   const [ready, setReady] = useState(false);
-  // Discrete phase index drives which headline block is mounted. This is
-  // deliberately NOT a continuous opacity crossfade across 3 permanently
-  // co-mounted blocks — that construction let more than one become
-  // readable at once. AnimatePresence below guarantees only one phase's
-  // JSX is ever in the DOM (plus its own brief exit copy).
-  const [phase, setPhase] = useState<1 | 2 | 3>(1);
   const prefersReducedMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -88,19 +83,11 @@ export function HeroReveal() {
     offset: ["start start", "end end"],
   });
 
-  const seamScaleX = useTransform(scrollYProgress, [0.04, 0.16], [0, 1]);
-
   // Fugate-style depth drift (Motion Bible §4): the background stage moves
-  // at its own slow velocity, independent of the phase text overlay above
-  // it. The stage wrapper is oversized (-inset-y-16) so this drift never
-  // exposes a gap at the top/bottom edge.
+  // at its own slow velocity. The stage wrapper is oversized (-inset-y-16)
+  // so this drift never exposes a gap at the top/bottom edge.
   const stageParallaxY = useTransform(scrollYProgress, [0, 1], [0, -48]);
   const cueOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
-
-  useMotionValueEvent(scrollYProgress, "change", (value) => {
-    const next = value < PHASE_1_END ? 1 : value < PHASE_2_END ? 2 : 3;
-    setPhase((prev) => (prev === next ? prev : next));
-  });
 
   const drawFrame = (index: number) => {
     const canvas = canvasRef.current;
@@ -203,13 +190,8 @@ export function HeroReveal() {
     if (frame !== currentFrameRef.current) drawFrame(frame);
   });
 
-  const phaseTransition = {
-    duration: prefersReducedMotion ? 0.01 : DUR.base,
-    ease: EASE_LUXE,
-  };
-
   return (
-    <section ref={sectionRef} className="relative min-h-[1320vh] w-full bg-[var(--color-ink)]">
+    <section ref={sectionRef} className="relative min-h-[1320vh] w-full">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/*
           Full-bleed stage: the frame sequence fills the entire viewport,
@@ -226,91 +208,30 @@ export function HeroReveal() {
           style={{ y: stageParallaxY }}
           className="absolute -inset-y-16 inset-x-0"
         >
-          <div ref={stageRef} className="h-full w-full">
-            {/*
-              Desaturate + darken wash (item 6): the sequence is rendered on
-              a light studio-pastel gradient, brighter/pinker than the
-              forest-green direction. Toned down via filter until the
-              Blender re-render lands — not a permanent color decision.
-            */}
-            <canvas
-              ref={canvasRef}
-              className="h-full w-full saturate-[0.55] brightness-[0.8]"
-              aria-hidden
-            />
+          {/*
+            Masked rather than covered. The previous version laid a
+            champagne-sand gradient over the bottom of the stage, which meant
+            flat painted color met the real page background (same base tone,
+            but carrying grain and the drifting color blobs) along a straight
+            line — near-identical tones, and the eye reads the discontinuity
+            as a hard edge anyway. Masking dissolves the photo itself, so what
+            appears underneath IS the shared background: nothing to
+            colour-match, so no seam can form.
+          */}
+          <div
+            ref={stageRef}
+            className="h-full w-full [mask-image:linear-gradient(to_bottom,black_0%,black_62%,transparent_92%)] [mask-repeat:no-repeat] [mask-size:100%_100%]"
+          >
+            <canvas ref={canvasRef} className="h-full w-full" aria-hidden />
           </div>
         </motion.div>
-
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-8 md:px-14">
-          <div className="relative min-h-[22rem] w-full max-w-lg md:min-h-[26rem]">
-            <AnimatePresence mode="sync">
-              {phase === 1 && (
-                <motion.div
-                  key="phase-1"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={phaseTransition}
-                  className="absolute inset-0 flex flex-col justify-center"
-                >
-                  <span className="tf-mono mb-6 text-champagne-sand">Flowerpost · Bulgaria</span>
-                  <h1 className="tf-display mb-8 text-ivory">
-                    Преди отварянето —
-                    <br />
-                    <span className="text-ribbon">тишина.</span>
-                  </h1>
-                  <motion.span
-                    style={{ scaleX: seamScaleX }}
-                    className="block h-px w-24 origin-left bg-gold"
-                    aria-hidden
-                  />
-                </motion.div>
-              )}
-
-              {phase === 2 && (
-                <motion.div
-                  key="phase-2"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={phaseTransition}
-                  className="absolute inset-0 flex flex-col justify-center"
-                >
-                  <span className="tf-mono mb-6 text-champagne-sand">Отваряне</span>
-                  <p className="tf-quote max-w-sm text-ivory/90">
-                    Панделката отстъпва. Капакът се повдига.
-                  </p>
-                </motion.div>
-              )}
-
-              {phase === 3 && (
-                <motion.div
-                  key="phase-3"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={phaseTransition}
-                  className="absolute inset-0 flex flex-col justify-center"
-                >
-                  <span className="tf-mono mb-6 text-champagne-sand">Разкритие</span>
-                  <h2 className="tf-headline mb-8 text-ivory">
-                    Розите, <em className="text-ribbon">разкрити</em>.
-                  </h2>
-                  <a href="#product" className="btn-bordeaux inline-block w-fit">
-                    Разгледай кутиите
-                  </a>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
 
         <motion.div
           style={{ opacity: cueOpacity }}
           className="pointer-events-none absolute inset-x-0 bottom-10 z-10 flex flex-col items-center gap-3"
           aria-hidden
         >
-          <span className="tf-mono text-gold/70">Скролни, за да отвориш</span>
+          <span className="tf-mono text-bordeaux">Скролни, за да отвориш</span>
           <span className="block h-10 w-px bg-gradient-to-b from-gold/50 to-transparent" />
         </motion.div>
       </div>

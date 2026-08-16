@@ -9,6 +9,11 @@
   --color-ink: #2b2420;
   --color-stone: #6b6259;
   --color-mist: #c9bfaf;
+
+  /* --font-space-mono is now an alias for the single site font (see
+     layout.tsx) — kept so ProductScene's inline font-[var(--font-space-mono)]
+     resolves without editing that file. */
+  --font-space-mono: var(--font-playfair);
 }
 
 @theme inline {
@@ -29,77 +34,185 @@ html {
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-ivory);
-  font-family: var(--font-playfair), Georgia, serif;
+  /* Base tone + grain only — the colored blobs live in <SiteBackground>
+     (fixed, JS-driven, very small scroll parallax) so the same single layer
+     sits behind Hero and every section with zero seam between them. */
+  background-color: var(--color-champagne-sand);
+  background-image:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-ivory) 60%, transparent) 0%,
+      transparent 25%,
+      transparent 75%,
+      color-mix(in srgb, var(--color-ink) 8%, transparent) 100%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
+  background-size: cover, 180px 180px;
+  background-attachment: fixed, fixed;
+  background-position: top, top left;
+  color: var(--color-ink);
+  font-family: "Montserrat", var(--font-playfair), sans-serif;
+  font-weight: 500;
+  /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
+     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
+     text role on the page sits at the same optical size as the brand mark. */
+  font-size: 16.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 @layer components {
+  /* Site-wide typography, applied identically to every text role per
+     spec: Montserrat 500, 18px, 0.22em tracking, uppercase. Headline
+     classes keep their own responsive clamp() size — a display headline
+     forced to 18px stops being a headline — everything else matches the
+     spec exactly. */
   .tf-display {
-    font-family: var(--font-playfair);
-    font-size: clamp(4rem, 7vw, 8rem);
-    font-weight: 800;
-    line-height: 0.92;
-    letter-spacing: -0.02em;
+    font-family: "Montserrat", var(--font-playfair), sans-serif;
+    font-size: clamp(1.375rem, 3.5vw, 4rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    overflow-wrap: break-word;
   }
 
   .tf-headline {
-    font-family: var(--font-playfair);
-    font-size: clamp(2.5rem, 4.5vw, 4.5rem);
-    font-weight: 700;
-    line-height: 1.02;
-    letter-spacing: -0.01em;
+    font-family: "Montserrat", var(--font-playfair), sans-serif;
+    font-size: clamp(1rem, 2.25vw, 2.25rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    overflow-wrap: break-word;
   }
 
   .tf-quote {
-    font-family: var(--font-playfair);
-    font-style: italic;
-    font-size: clamp(1.375rem, 2.2vw, 2rem);
+    font-family: "Montserrat", var(--font-playfair), sans-serif;
+    font-weight: 500;
+    /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
+     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
+     text role on the page sits at the same optical size as the brand mark. */
+  font-size: 16.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
     line-height: 1.4;
   }
 
   .tf-mono {
-    font-family: var(--font-space-mono);
-    font-size: 11px;
-    letter-spacing: 0.24em;
+    font-family: "Montserrat", var(--font-space-mono), sans-serif;
+    font-weight: 500;
+    /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
+     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
+     text role on the page sits at the same optical size as the brand mark. */
+  font-size: 16.5px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
   }
 
   .tf-body {
-    font-family: system-ui, sans-serif;
-    font-size: 1rem;
+    font-family: "Montserrat", var(--font-space-mono), sans-serif;
+    font-weight: 500;
+    /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
+     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
+     text role on the page sits at the same optical size as the brand mark. */
+  font-size: 16.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
     line-height: 1.75;
-    color: var(--color-mist);
+    color: var(--color-stone);
+  }
+
+  /* Shared 3D mechanics for every CTA button — color/fill stays per-variant
+     below, but the lift/press physics live in one place so no button drifts
+     out of sync with the others. */
+  .btn-bordeaux,
+  .btn-gold-outline {
+    position: relative;
+    font-family: "Montserrat", var(--font-space-mono), sans-serif;
+    /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
+     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
+     text role on the page sits at the same optical size as the brand mark. */
+  font-size: 16.5px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 1.25rem 2.75rem;
+    border-radius: 6px;
+    transform: translateY(0);
+    transition:
+      transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 160ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 200ms ease,
+      color 200ms ease,
+      opacity 200ms ease;
+  }
+  .btn-bordeaux:hover,
+  .btn-gold-outline:hover {
+    transform: translateY(-2px);
+  }
+  .btn-bordeaux:active,
+  .btn-gold-outline:active {
+    transform: translateY(1px);
   }
 
   .btn-bordeaux {
-    font-family: var(--font-space-mono);
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 1.25rem 2.75rem;
-    background-color: var(--color-bordeaux);
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bordeaux) 82%, white) 0%,
+      var(--color-bordeaux) 55%,
+      color-mix(in srgb, var(--color-bordeaux) 82%, black) 100%
+    );
+    border: 1px solid color-mix(in srgb, var(--color-bordeaux) 65%, black);
     color: var(--color-ivory);
-    transition: opacity 200ms ease;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 25%, transparent),
+      0 1px 0 color-mix(in srgb, var(--color-bordeaux) 55%, black),
+      0 6px 16px color-mix(in srgb, var(--color-ink) 30%, transparent);
   }
   .btn-bordeaux:hover {
-    opacity: 0.85;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 30%, transparent),
+      0 3px 0 color-mix(in srgb, var(--color-bordeaux) 55%, black),
+      0 12px 24px color-mix(in srgb, var(--color-ink) 35%, transparent);
+  }
+  .btn-bordeaux:active {
+    box-shadow:
+      inset 0 1px 2px color-mix(in srgb, black 25%, transparent),
+      0 0 0 color-mix(in srgb, var(--color-bordeaux) 55%, black),
+      0 2px 6px color-mix(in srgb, var(--color-ink) 25%, transparent);
   }
 
   .btn-gold-outline {
-    font-family: var(--font-space-mono);
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 1.25rem 2.75rem;
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-ivory) 95%, transparent) 0%,
+      color-mix(in srgb, var(--color-champagne-sand) 70%, transparent) 100%
+    );
     border: 1px solid var(--color-gold);
-    color: var(--color-gold);
-    background-color: transparent;
-    transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--color-bordeaux);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 50%, transparent),
+      0 1px 0 color-mix(in srgb, var(--color-gold) 45%, transparent),
+      0 6px 16px color-mix(in srgb, var(--color-ink) 12%, transparent);
   }
   .btn-gold-outline:hover {
     background-color: var(--color-gold);
+    background-image: none;
     color: var(--color-ivory);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 30%, transparent),
+      0 3px 0 color-mix(in srgb, var(--color-gold) 60%, black),
+      0 12px 22px color-mix(in srgb, var(--color-ink) 20%, transparent);
+  }
+  .btn-gold-outline:active {
+    box-shadow:
+      inset 0 1px 2px color-mix(in srgb, black 15%, transparent),
+      0 0 0 color-mix(in srgb, var(--color-gold) 60%, black),
+      0 2px 6px color-mix(in srgb, var(--color-ink) 15%, transparent);
   }
 
   .hairline {

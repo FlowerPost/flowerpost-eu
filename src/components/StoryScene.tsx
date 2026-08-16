@@ -12,12 +12,12 @@ const paragraphs = [
 
 export function StoryScene() {
   return (
-    <section id="story" className="bg-ink px-8 py-28 md:px-14 md:py-40 lg:py-56">
+    <section id="story" className="px-8 py-28 md:px-14 md:py-40 lg:py-56">
       <div className="mx-auto max-w-7xl">
         <motion.div {...fadeUp} className="mb-16 md:mb-20">
-          <span className="tf-mono mb-6 block text-gold">Историята</span>
-          <h2 className="tf-headline max-w-3xl text-ivory">
-            Не декорация. <em className="text-ribbon">Ритуал.</em>
+          <span className="tf-mono mb-6 block text-bordeaux">Историята</span>
+          <h2 className="tf-headline max-w-3xl text-ink">
+            Не декорация. <em className="text-bordeaux">Ритуал.</em>
           </h2>
         </motion.div>
 
@@ -28,7 +28,7 @@ export function StoryScene() {
                 key={p}
                 {...fadeUp}
                 transition={{ ...fadeUp.transition, delay: i * 0.1 }}
-                className="tf-quote max-w-xl text-mist"
+                className="tf-quote max-w-xl text-stone"
               >
                 {p}
               </motion.p>
@@ -38,18 +38,22 @@ export function StoryScene() {
           <motion.figure
             {...fadeUp}
             transition={{ ...fadeUp.transition, delay: 0.15 }}
-            className="w-full shrink-0 md:w-64"
+            className="w-full shrink-0 md:w-96"
           >
-            <div className="relative aspect-[3/2] overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.35)]">
+            {/* Layered shadow — a tight, dark contact shadow close to the
+                edge plus a soft, diffused one further out — is what reads
+                as an object actually resting above the page, not just a
+                flat photo with a drop-shadow filter slapped on. */}
+            <div className="relative aspect-[16/10] overflow-hidden rounded-lg shadow-[0_1px_2px_rgba(43,36,32,0.2),0_2px_6px_rgba(43,36,32,0.18),0_28px_60px_-16px_rgba(43,36,32,0.5)] ring-1 ring-black/5">
               <Image
-                src="/images/provenance-card.jpg"
-                alt="Provenance картичка FLOWERPOST"
+                src="/images/box-gift-marble.jpg"
+                alt="FLOWERPOST подаръчна кутия с панделка до букет бели рози на мраморен плот"
                 fill
-                sizes="(min-width: 768px) 16rem, 90vw"
+                sizes="(min-width: 768px) 24rem, 90vw"
                 className="object-cover"
               />
             </div>
-            <figcaption className="tf-mono mt-4 text-mist">Provenance карта</figcaption>
+            <figcaption className="tf-mono mt-4 text-stone">Кутията, готова за отваряне</figcaption>
           </motion.figure>
         </div>
       </div>

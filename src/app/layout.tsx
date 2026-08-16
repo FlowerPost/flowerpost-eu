@@ -1,18 +1,28 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Space_Mono } from "next/font/google";
+import { Montserrat, Playfair_Display } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
+import { SiteBackground } from "@/components/SiteBackground";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+// Single site-wide typeface — replaces the previous Playfair/Manrope pair.
+// Bound to --font-playfair; globals.css aliases --font-space-mono to the
+// same variable, so every existing .tf-* class and component reference
+// (including ProductScene's inline font-[var(--font-space-mono)]) resolves
+// to Montserrat with no other file to touch.
+const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
+  weight: ["500"],
   variable: "--font-playfair",
   display: "swap",
 });
 
-const spaceMono = Space_Mono({
+// Scoped to the SVG brand mark only — the site copy stays Montserrat. The
+// wordmark is a high-contrast didone-style serif, which Montserrat cannot
+// stand in for; this is a logo asset, not body typography.
+const logoSerif = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-space-mono",
+  weight: ["400", "500"],
+  variable: "--font-logo",
   display: "swap",
 });
 
@@ -32,13 +42,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="bg"
-      className={`${playfair.variable} ${spaceMono.variable} h-full antialiased`}
+      className={`${montserrat.variable} ${logoSerif.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body
-        className="min-h-full flex flex-col bg-ink text-ivory"
+        className="min-h-full flex flex-col text-ink"
         suppressHydrationWarning
       >
+        <SiteBackground />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
