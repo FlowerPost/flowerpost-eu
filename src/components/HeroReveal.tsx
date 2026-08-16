@@ -209,7 +209,7 @@ export function HeroReveal() {
   };
 
   return (
-    <section ref={sectionRef} className="relative min-h-[440vh] w-full bg-[var(--color-ink)]">
+    <section ref={sectionRef} className="relative min-h-[1320vh] w-full bg-[var(--color-ink)]">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/*
           Full-bleed stage: the frame sequence fills the entire viewport,
