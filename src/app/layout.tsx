@@ -17,6 +17,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://flowerpost.eu"),
   title: "FLOWERPOST — Bulgaria",
   description:
     "Тих луксозен ритуал на цветята. Рози и сезонни цветя, доставени от сърцето на България.",

@@ -116,12 +116,44 @@ export function HeroReveal() {
   useEffect(() => {
     let cancelled = false;
 
+    // Progressive load, not Promise.all(all 241) — the previous version
+    // blocked the entire hero (canvas stays blank, scroll updates no-op)
+    // until every one of 7.9MB / 241 requests finished: 5-8s on real
+    // mobile networks. Instead: load a small initial batch synchronously
+    // (~24 frames × ~33KB ≈ 800KB, an order of magnitude less), flip
+    // `ready` as soon as that's in, then stream the rest in the
+    // background at limited concurrency so it never competes with
+    // anything the user is actively doing. drawFrame() already no-ops
+    // gracefully for an index that hasn't arrived yet (holds the last
+    // drawn frame), so a still-loading tail frame is never a hard error —
+    // just a brief hold during a very fast early scroll.
+    const INITIAL_BATCH = 24;
+    const CONCURRENCY = 6;
+
     async function preload() {
       const sources = Array.from({ length: FRAME_COUNT }, (_, i) => FRAME_PATH(i + 1));
-      const loaded = await Promise.all(sources.map(loadImage));
+
+      const initial = await Promise.all(sources.slice(0, INITIAL_BATCH).map(loadImage));
       if (cancelled) return;
-      imagesRef.current = loaded;
+      initial.forEach((img, i) => {
+        imagesRef.current[i] = img;
+      });
       setReady(true);
+
+      let next = INITIAL_BATCH;
+      async function worker() {
+        while (!cancelled && next < FRAME_COUNT) {
+          const i = next++;
+          try {
+            imagesRef.current[i] = await loadImage(sources[i]);
+            const wanted = Math.round(clamp01(scrollYProgress.get()) * (FRAME_COUNT - 1));
+            if (wanted === i) drawFrame(i);
+          } catch {
+            // one missing frame just leaves a gap — drawFrame skips it
+          }
+        }
+      }
+      await Promise.all(Array.from({ length: CONCURRENCY }, worker));
     }
 
     preload().catch(() => {
@@ -177,7 +209,7 @@ export function HeroReveal() {
   };
 
   return (
-    <section ref={sectionRef} className="relative min-h-[440vh] w-full bg-[#131e15]">
+    <section ref={sectionRef} className="relative min-h-[440vh] w-full bg-[var(--color-ink)]">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/*
           Full-bleed stage: the frame sequence fills the entire viewport,
