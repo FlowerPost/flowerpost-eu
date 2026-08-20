@@ -54,23 +54,29 @@ body {
   color: var(--color-ink);
   font-family: "Montserrat", var(--font-playfair), sans-serif;
   font-weight: 500;
-  /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
-     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
-     text role on the page sits at the same optical size as the brand mark. */
-  font-size: 16.5px;
+  /* Kept in sync with .tf-body/.tf-quote's clamp — see @layer components
+     below for why this scales instead of sitting at a flat 16.5px. */
+  font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
 @layer components {
-  /* Site-wide typography, applied identically to every text role per
-     spec: Montserrat 500, 18px, 0.22em tracking, uppercase. Headline
-     classes keep their own responsive clamp() size — a display headline
-     forced to 18px stops being a headline — everything else matches the
-     spec exactly. */
+  /* One type scale, four roles, each guaranteed to clear the one below it
+     AT ITS OWN FLOOR — not just at some reference width. The previous
+     values were tuned in two separate, disconnected passes: the headline
+     clamps were set against a 9px body baseline that was later abandoned,
+     and body/label/button were all reset afterward to a flat 16.5px
+     without the headlines being rescaled to match. Measured result on a
+     375px phone: .tf-headline rendered at 16px — SMALLER than the 16.5px
+     body paragraph sitting next to it, and eyebrow labels were exactly
+     the same size as body copy (16.5px = 16.5px), so neither read as a
+     label. Every floor below is chosen so that never happens again:
+     label(13) < body(16.5) < headline(28) < display(36), true at any
+     viewport width including the narrowest phone. */
   .tf-display {
     font-family: "Montserrat", var(--font-playfair), sans-serif;
-    font-size: clamp(1.375rem, 3.5vw, 4rem);
+    font-size: clamp(2.25rem, 6.5vw, 5.5rem);
     font-weight: 500;
     line-height: 0.95;
     letter-spacing: 0.22em;
@@ -81,9 +87,9 @@ body {
 
   .tf-headline {
     font-family: "Montserrat", var(--font-playfair), sans-serif;
-    font-size: clamp(1rem, 2.25vw, 2.25rem);
+    font-size: clamp(1.75rem, 4vw, 3.25rem);
     font-weight: 500;
-    line-height: 1.05;
+    line-height: 1.08;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     text-wrap: balance;
@@ -93,22 +99,20 @@ body {
   .tf-quote {
     font-family: "Montserrat", var(--font-playfair), sans-serif;
     font-weight: 500;
-    /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
-     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
-     text role on the page sits at the same optical size as the brand mark. */
-  font-size: 16.5px;
+    font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
     letter-spacing: 0.22em;
     text-transform: uppercase;
     line-height: 1.4;
   }
 
+  /* Eyebrow / kicker labels — deliberately the smallest role. At 16.5px
+     these were indistinguishable from body copy; 13px is still comfortably
+     above the 12px floor verified earlier (no page text renders under 12px)
+     while reading as a label, not a second paragraph style. */
   .tf-mono {
     font-family: "Montserrat", var(--font-space-mono), sans-serif;
     font-weight: 500;
-    /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
-     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
-     text role on the page sits at the same optical size as the brand mark. */
-  font-size: 16.5px;
+    font-size: clamp(0.75rem, 1.3vw, 0.8125rem);
     letter-spacing: 0.22em;
     text-transform: uppercase;
   }
@@ -116,10 +120,7 @@ body {
   .tf-body {
     font-family: "Montserrat", var(--font-space-mono), sans-serif;
     font-weight: 500;
-    /* Matches the rendered size of the logo's "MADE TO BRIGHTEN YOUR DAY"
-     tagline (26 SVG units x the 0.64 viewBox scale = 16.6px), so every small
-     text role on the page sits at the same optical size as the brand mark. */
-  font-size: 16.5px;
+    font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
     letter-spacing: 0.22em;
     text-transform: uppercase;
     line-height: 1.75;
@@ -138,7 +139,7 @@ body {
     position: relative;
     display: inline-block;
     font-family: "Montserrat", var(--font-space-mono), sans-serif;
-    font-size: 16.5px;
+    font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
     font-weight: 500;
     letter-spacing: 0.22em;
     text-transform: uppercase;

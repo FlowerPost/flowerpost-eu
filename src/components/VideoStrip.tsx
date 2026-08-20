@@ -12,7 +12,7 @@ const clips = [
 
 export function VideoStrip() {
   return (
-    <section className="px-8 py-28 md:px-14 md:py-40">
+    <section className="px-8 py-28 md:px-14 md:py-40 lg:py-56">
       <div className="mx-auto max-w-7xl">
         <motion.div {...fadeUp} className="mb-14 max-w-2xl md:mb-20">
           <span className="tf-mono mb-6 block text-bordeaux">В движение</span>

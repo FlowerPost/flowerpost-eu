@@ -66,14 +66,26 @@ export function ProductScene() {
                 </span>
               )}
 
-              <h3 className="tf-headline mb-2 text-ink" style={{ fontSize: "2rem" }}>
+              {/* Fixed 2rem previously — never shrank, so on the 3-up mobile
+                  grid where the card itself narrows this didn't scale with
+                  its container the way every other sized element on the
+                  page does. Clamped to the same range tf-headline's low end
+                  uses, capped below full headline size since it's a card
+                  title, not a section headline. */}
+              <h3
+                className="tf-headline mb-2 text-ink"
+                style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)" }}
+              >
                 {tier.name}
               </h3>
 
               {/* baseline-aligned inline row so "лв / кутия" trails the
                   numeral instead of wrapping under it mid-phrase */}
               <div className="mb-10 flex flex-wrap items-baseline gap-x-2">
-                <span className="tf-display text-bordeaux" style={{ fontSize: "3.5rem" }}>
+                <span
+                  className="tf-display text-bordeaux"
+                  style={{ fontSize: "clamp(2.5rem, 8vw, 3.5rem)" }}
+                >
                   {tier.price}
                 </span>
                 <span className="tf-mono whitespace-nowrap text-stone">лв / кутия</span>

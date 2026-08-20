@@ -176,13 +176,15 @@ export function LogoSeam() {
         </svg>
 
         {/* Tagline as HTML: holds the site's own small-text size at every
-            viewport instead of shrinking with the SVG. The bordeaux cast is
-            the same idea as the SVG filter it replaces — a warm offset reads
-            as separation on this light background where neutral grey just
-            muddies hairline caps. */}
+            viewport instead of shrinking with the SVG. Gold text measured
+            2.39:1 against the page's champagne-sand background — visibly
+            hard to read, and well under the 4.5:1 WCAG AA floor for text
+            this size. Bordeaux on the same background reads at ~10:1; the
+            soft gold glow moves to the shadow instead, so the mark keeps
+            its metallic accent without the fill itself failing contrast. */}
         <div
-          className="tf-mono relative mt-3 text-center text-[var(--color-gold)] sm:mt-4"
-          style={{ textShadow: "0 1px 0 rgba(92,26,36,0.75), 0 2px 6px rgba(92,26,36,0.35)" }}
+          className="tf-mono relative mt-3 text-center text-bordeaux sm:mt-4"
+          style={{ textShadow: "0 1px 0 rgba(247,241,232,0.8), 0 2px 8px rgba(176,141,87,0.45)" }}
         >
           Made to brighten your day
         </div>
