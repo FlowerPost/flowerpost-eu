@@ -20,7 +20,7 @@ const STATIC_FRAME_PROGRESS = 0.85;
 // frames are a fixed 668x990 (that's the full delivered render, confirmed
 // against the original sequence-final export, not a compressed copy), so
 // this can't add real detail, but a higher-resolution backing store gives
-// the smoothing filter in drawCover more pixels to interpolate into, which
+// the smoothing filter more pixels to interpolate into, which
 // reads as materially less blurry on retina/high-DPI screens.
 const DPR_MAX_TOUCH = 2.5;
 const DPR_MAX_DEFAULT = 3;
@@ -45,26 +45,67 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, cw: number, ch: number) {
+// Edge softening for the contained case, done on the canvas rather than in
+// CSS so it always tracks the draw mode exactly — a CSS mask keyed to a
+// breakpoint would desync from this aspect-based decision at odd window
+// sizes and leave a hard photo edge showing.
+function fadeSides(
+  ctx: CanvasRenderingContext2D,
+  dx: number,
+  dw: number,
+  ch: number,
+) {
+  const g = ctx.createLinearGradient(dx, 0, dx + dw, 0);
+  g.addColorStop(0, "rgba(0,0,0,1)");
+  g.addColorStop(0.1, "rgba(0,0,0,0)");
+  g.addColorStop(0.9, "rgba(0,0,0,0)");
+  g.addColorStop(1, "rgba(0,0,0,1)");
+  ctx.globalCompositeOperation = "destination-out";
+  ctx.fillStyle = g;
+  ctx.fillRect(dx, 0, dw, ch);
+  ctx.globalCompositeOperation = "source-over";
+}
+
+function drawFrameFitted(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  cw: number,
+  ch: number,
+) {
   const imgAspect = img.width / img.height;
   const canvasAspect = cw / ch;
-  let sx = 0;
-  let sy = 0;
-  let sw = img.width;
-  let sh = img.height;
-
-  if (imgAspect > canvasAspect) {
-    sw = img.height * canvasAspect;
-    sx = (img.width - sw) / 2;
-  } else {
-    sh = img.width / canvasAspect;
-    sy = (img.height - sh) / 2;
-  }
 
   ctx.clearRect(0, 0, cw, ch);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+
+  if (canvasAspect <= imgAspect) {
+    // Portrait-ish viewport (phones): cover fills the screen while still
+    // drawing the source at or below its native size — 0.82x at 375x812 —
+    // so it stays sharp. Keep it edge to edge.
+    let sx = 0;
+    let sw = img.width;
+    if (imgAspect > canvasAspect) {
+      sw = img.height * canvasAspect;
+      sx = (img.width - sw) / 2;
+    }
+    ctx.drawImage(img, sx, 0, sw, img.height, 0, 0, cw, ch);
+    return;
+  }
+
+  // Landscape viewport: contain, not cover. The frames are a fixed 668x990
+  // portrait render, so covering a wide screen means blowing them up 2.16x
+  // at 1440 wide (2.87x at 1920) and discarding well over half the frame's
+  // height — which is why the box read as both cropped-in and soft. Fitting
+  // instead keeps the whole composition and holds the scale at or near 1:1.
+  const scale = Math.min(cw / img.width, ch / img.height);
+  const dw = img.width * scale;
+  const dh = img.height * scale;
+  const dx = (cw - dw) / 2;
+  const dy = (ch - dh) / 2;
+
+  ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, dw, dh);
+  fadeSides(ctx, dx, dw, ch);
 }
 
 export function HeroReveal() {
@@ -96,7 +137,7 @@ export function HeroReveal() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const dpr = dprRef.current;
-    drawCover(ctx, img, canvas.width / dpr, canvas.height / dpr);
+    drawFrameFitted(ctx, img, canvas.width / dpr, canvas.height / dpr);
     currentFrameRef.current = index;
   };
 
