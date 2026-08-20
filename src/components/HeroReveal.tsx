@@ -35,13 +35,29 @@ function clamp01(value: number): number {
   return Math.min(1, Math.max(0, value));
 }
 
-function loadImage(src: string): Promise<HTMLImageElement> {
+// Retries before giving up: on a real mobile connection a dropped or timed
+// out image request is common, not exceptional (verified against a screen
+// recording on a real phone over 5G where the Hero canvas never painted a
+// single frame for the entire scroll — a failure this environment's stable
+// connection never reproduces). Each retry waits a bit longer than the last.
+function loadImage(src: string, attempts = 3): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.decoding = "async";
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`Failed to load ${src}`));
-    img.src = src;
+    let tries = 0;
+    const attempt = () => {
+      tries++;
+      const img = new Image();
+      img.decoding = "async";
+      img.onload = () => resolve(img);
+      img.onerror = () => {
+        if (tries < attempts) {
+          setTimeout(attempt, 300 * tries);
+        } else {
+          reject(new Error(`Failed to load ${src} after ${attempts} attempts`));
+        }
+      };
+      img.src = src;
+    };
+    attempt();
   });
 }
 
@@ -161,10 +177,17 @@ export function HeroReveal() {
     async function preload() {
       const sources = Array.from({ length: FRAME_COUNT }, (_, i) => FRAME_PATH(i + 1));
 
-      const initial = await Promise.all(sources.slice(0, INITIAL_BATCH).map(loadImage));
+      // allSettled, not all: Promise.all's all-or-nothing semantics meant
+      // ANY ONE of these 24 concurrent requests failing rejected the whole
+      // batch, the preload().catch below swallowed it, `ready` never
+      // flipped true, and the canvas stayed permanently blank for the rest
+      // of the session — no retry, no partial render, nothing. allSettled
+      // draws whatever did arrive and moves on; the background worker below
+      // (which only starts once `ready` is true) keeps trying the rest.
+      const initial = await Promise.allSettled(sources.slice(0, INITIAL_BATCH).map((s) => loadImage(s)));
       if (cancelled) return;
-      initial.forEach((img, i) => {
-        imagesRef.current[i] = img;
+      initial.forEach((result, i) => {
+        if (result.status === "fulfilled") imagesRef.current[i] = result.value;
       });
       setReady(true);
 
