@@ -15,8 +15,8 @@ export default function Home() {
       <HeroReveal />
       <LogoSeam />
       <IntroStatement />
-      <StoryScene />
       <VideoBand />
+      <StoryScene />
       <ProductScene />
       <VideoStrip />
       <ReviewsTeaser />

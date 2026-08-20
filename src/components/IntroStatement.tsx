@@ -58,6 +58,19 @@ export function IntroStatement() {
               Историята
             </a>
           </motion.div>
+
+          {/* Relocated from VideoBand — same copy/emphasis split, now
+              anchoring the CTA row instead of overlaying the hanging-roses
+              clip. */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewport}
+            transition={{ duration: DUR.base, ease: EASE_LUXE, delay: 0.44 }}
+            className="tf-headline mt-10 text-ink"
+          >
+            Всяко стъбло <em className="text-bordeaux">подбрано на ръка</em>
+          </motion.p>
         </div>
       </div>
     </section>
