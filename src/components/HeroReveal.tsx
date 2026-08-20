@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValueEvent,
-  useReducedMotion,
   useScroll,
   useTransform,
 } from "framer-motion";
@@ -14,7 +13,6 @@ import { debugLog } from "@/lib/debug";
 const FRAME_COUNT = 241;
 const FRAME_PATH = (n: number) =>
   `/sequences/box-reveal/frame_${String(n).padStart(3, "0")}.webp`;
-const STATIC_FRAME_PROGRESS = 0.85;
 
 // Capped at the display's actual pixel density (up from a flat 1.5/2) so the
 // canvas backing store is as sharp as the screen can show — the source
@@ -149,7 +147,6 @@ export function HeroReveal() {
   const dprRef = useRef(1);
 
   const [ready, setReady] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -196,36 +193,10 @@ export function HeroReveal() {
   useEffect(() => {
     let cancelled = false;
 
-    // Reduced motion shows exactly one still frame — the box never opens —
-    // so it doesn't need the animated sequence's progressive batch loader at
-    // all. It used to run through that loader anyway and then, once ready,
-    // try to draw the target still frame (~85% through the sequence, index
-    // ~204). That frame is nowhere near the first 24 the batch loader
-    // fetches, so drawFrame() found imagesRef.current[204] undefined and
-    // silently no-op'd — confirmed on a real phone with Reduce Motion
-    // enabled via the diagnostic overlay: canvas backing store sized
-    // correctly (975x2168), but currentFrame stayed -1 forever. The
-    // background worker does eventually load frame 204, but its own
-    // redraw check compares against live scroll progress, which reduced
-    // motion never updates against — so even a frame that finishes loading
-    // later was never drawn. Loading only the one needed frame sidesteps
-    // both bugs and is strictly less work.
-    if (prefersReducedMotion) {
-      const staticIndex = Math.round(STATIC_FRAME_PROGRESS * (FRAME_COUNT - 1));
-      loadImage(FRAME_PATH(staticIndex + 1))
-        .then((img) => {
-          if (cancelled) return;
-          imagesRef.current[staticIndex] = img;
-          setReady(true);
-        })
-        .catch(() => {
-          // keeps the champagne-sand fallback rather than throwing
-        });
-      return () => {
-        cancelled = true;
-      };
-    }
-
+    // Deliberately ignores prefers-reduced-motion — the box-reveal and the
+    // ambient video clips are the site's core visual identity, and the
+    // owner chose to always show them rather than degrade to a still image
+    // for visitors with that OS setting on.
     // Progressive load, not Promise.all(all 241) — the previous version
     // blocked the entire hero (canvas stays blank, scroll updates no-op)
     // until every one of 7.9MB / 241 requests finished: 5-8s on real
@@ -289,7 +260,7 @@ export function HeroReveal() {
     return () => {
       cancelled = true;
     };
-  }, [prefersReducedMotion]);
+  }, []);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -327,23 +298,20 @@ export function HeroReveal() {
 
   useEffect(() => {
     if (!ready) return;
-    const frame = prefersReducedMotion
-      ? Math.round(STATIC_FRAME_PROGRESS * (FRAME_COUNT - 1))
-      : Math.round(clamp01(scrollYProgress.get()) * (FRAME_COUNT - 1));
+    const frame = Math.round(clamp01(scrollYProgress.get()) * (FRAME_COUNT - 1));
     drawFrame(frame);
     debugLog("initialDraw", {
       ready,
-      prefersReducedMotion,
       frame,
       frameImageLoaded: Boolean(imagesRef.current[frame]),
       canvasSize: canvasRef.current
         ? { w: canvasRef.current.width, h: canvasRef.current.height }
         : null,
     });
-  }, [ready, prefersReducedMotion, scrollYProgress]);
+  }, [ready, scrollYProgress]);
 
   useMotionValueEvent(scrollYProgress, "change", (value) => {
-    if (!ready || prefersReducedMotion) return;
+    if (!ready) return;
     const frame = Math.round(clamp01(value) * (FRAME_COUNT - 1));
     if (frame !== currentFrameRef.current) drawFrame(frame);
   });
@@ -368,10 +336,7 @@ export function HeroReveal() {
         <motion.div
           initial={{ opacity: 0, scale: 1.04 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: prefersReducedMotion ? 0.01 : DUR.epic,
-            ease: EASE_LUXE,
-          }}
+          transition={{ duration: DUR.epic, ease: EASE_LUXE }}
           style={{ y: stageParallaxY }}
           className="absolute -inset-y-16 inset-x-0"
         >
