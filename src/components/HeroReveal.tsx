@@ -196,6 +196,36 @@ export function HeroReveal() {
   useEffect(() => {
     let cancelled = false;
 
+    // Reduced motion shows exactly one still frame — the box never opens —
+    // so it doesn't need the animated sequence's progressive batch loader at
+    // all. It used to run through that loader anyway and then, once ready,
+    // try to draw the target still frame (~85% through the sequence, index
+    // ~204). That frame is nowhere near the first 24 the batch loader
+    // fetches, so drawFrame() found imagesRef.current[204] undefined and
+    // silently no-op'd — confirmed on a real phone with Reduce Motion
+    // enabled via the diagnostic overlay: canvas backing store sized
+    // correctly (975x2168), but currentFrame stayed -1 forever. The
+    // background worker does eventually load frame 204, but its own
+    // redraw check compares against live scroll progress, which reduced
+    // motion never updates against — so even a frame that finishes loading
+    // later was never drawn. Loading only the one needed frame sidesteps
+    // both bugs and is strictly less work.
+    if (prefersReducedMotion) {
+      const staticIndex = Math.round(STATIC_FRAME_PROGRESS * (FRAME_COUNT - 1));
+      loadImage(FRAME_PATH(staticIndex + 1))
+        .then((img) => {
+          if (cancelled) return;
+          imagesRef.current[staticIndex] = img;
+          setReady(true);
+        })
+        .catch(() => {
+          // keeps the champagne-sand fallback rather than throwing
+        });
+      return () => {
+        cancelled = true;
+      };
+    }
+
     // Progressive load, not Promise.all(all 241) — the previous version
     // blocked the entire hero (canvas stays blank, scroll updates no-op)
     // until every one of 7.9MB / 241 requests finished: 5-8s on real
@@ -259,7 +289,7 @@ export function HeroReveal() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     const stage = stageRef.current;

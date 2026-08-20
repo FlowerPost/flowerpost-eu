@@ -5,9 +5,24 @@ import { AmbientVideo } from "@/components/AmbientVideo";
 import { fadeUp } from "@/lib/motion";
 
 const clips = [
-  { src: "/videos/bouquet-red.mp4", label: "Букет червени рози в ръце", caption: "Подготовка" },
-  { src: "/videos/be-my-love.mp4", label: "Рози до светеща табела", caption: "Поводът" },
-  { src: "/videos/love-vase.mp4", label: "Рози във ваза до светеща табела", caption: "У дома" },
+  {
+    src: "/videos/bouquet-red.mp4",
+    poster: "/videos/posters/bouquet-red.jpg",
+    label: "Букет червени рози в ръце",
+    caption: "Подготовка",
+  },
+  {
+    src: "/videos/be-my-love.mp4",
+    poster: "/videos/posters/be-my-love.jpg",
+    label: "Рози до светеща табела",
+    caption: "Поводът",
+  },
+  {
+    src: "/videos/love-vase.mp4",
+    poster: "/videos/posters/love-vase.jpg",
+    label: "Рози във ваза до светеща табела",
+    caption: "У дома",
+  },
 ];
 
 export function VideoStrip() {
@@ -35,6 +50,7 @@ export function VideoStrip() {
               <div className="relative aspect-[9/16] overflow-hidden rounded-lg shadow-[0_1px_2px_rgba(43,36,32,0.2),0_2px_6px_rgba(43,36,32,0.16),0_24px_50px_-18px_rgba(43,36,32,0.45)] ring-1 ring-black/5">
                 <AmbientVideo
                   src={clip.src}
+                  poster={clip.poster}
                   label={clip.label}
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />

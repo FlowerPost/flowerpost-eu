@@ -29,6 +29,7 @@ export function VideoBand() {
       <div className="absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent_0%,black_18%,black_82%,transparent_100%)]">
         <AmbientVideo
           src="/videos/roses-hanging.mp4"
+          poster="/videos/posters/roses-hanging.jpg"
           label="Рози, окачени с цветовете надолу"
           className={`h-full w-full object-cover ${CONTAIN_FROM_MD}`}
         />
