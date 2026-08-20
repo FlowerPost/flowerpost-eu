@@ -9,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { DUR, EASE_LUXE } from "@/lib/motion";
+import { debugLog } from "@/lib/debug";
 
 const FRAME_COUNT = 241;
 const FRAME_PATH = (n: number) =>
@@ -33,6 +34,21 @@ function getMaxDpr(): number {
 
 function clamp01(value: number): number {
   return Math.min(1, Math.max(0, value));
+}
+
+// Canonical 1x1 lossy WebP (Modernizr's test image). If this fails to decode,
+// every one of the 241 sequence frames will fail identically — a browser
+// with no WebP support wouldn't look like "some frames missing", it would
+// look exactly like "canvas never draws anything, ever", which is what the
+// user's recording shows.
+function testWebpSupport(): Promise<boolean> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img.width === 1);
+    img.onerror = () => resolve(false);
+    img.src =
+      "data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==";
+  });
 }
 
 // Retries before giving up: on a real mobile connection a dropped or timed
@@ -158,6 +174,26 @@ export function HeroReveal() {
   };
 
   useEffect(() => {
+    const nav = navigator as Navigator & {
+      connection?: { effectiveType?: string; saveData?: boolean; downlink?: number };
+    };
+    debugLog("env", {
+      ua: navigator.userAgent,
+      devicePixelRatio: window.devicePixelRatio,
+      maxDpr: getMaxDpr(),
+      reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      connection: nav.connection
+        ? {
+            effectiveType: nav.connection.effectiveType,
+            saveData: nav.connection.saveData,
+            downlink: nav.connection.downlink,
+          }
+        : null,
+    });
+    testWebpSupport().then((supported) => debugLog("webpSupport", supported));
+  }, []);
+
+  useEffect(() => {
     let cancelled = false;
 
     // Progressive load, not Promise.all(all 241) — the previous version
@@ -186,9 +222,17 @@ export function HeroReveal() {
       // (which only starts once `ready` is true) keeps trying the rest.
       const initial = await Promise.allSettled(sources.slice(0, INITIAL_BATCH).map((s) => loadImage(s)));
       if (cancelled) return;
+      let loadedCount = 0;
+      const failures: string[] = [];
       initial.forEach((result, i) => {
-        if (result.status === "fulfilled") imagesRef.current[i] = result.value;
+        if (result.status === "fulfilled") {
+          imagesRef.current[i] = result.value;
+          loadedCount++;
+        } else {
+          failures.push(`frame_${i + 1}: ${String(result.reason?.message ?? result.reason)}`);
+        }
       });
+      debugLog("initialBatch", { loaded: loadedCount, total: INITIAL_BATCH, failures });
       setReady(true);
 
       let next = INITIAL_BATCH;
@@ -232,6 +276,17 @@ export function HeroReveal() {
       const ctx = canvas.getContext("2d");
       if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (currentFrameRef.current >= 0) drawFrame(currentFrameRef.current);
+      debugLog("canvas", {
+        dpr,
+        rectW: rect.width,
+        rectH: rect.height,
+        canvasW: canvas.width,
+        canvasH: canvas.height,
+        innerW: window.innerWidth,
+        innerH: window.innerHeight,
+        docClientH: document.documentElement.clientHeight,
+        currentFrame: currentFrameRef.current,
+      });
     };
 
     resize();
@@ -246,6 +301,15 @@ export function HeroReveal() {
       ? Math.round(STATIC_FRAME_PROGRESS * (FRAME_COUNT - 1))
       : Math.round(clamp01(scrollYProgress.get()) * (FRAME_COUNT - 1));
     drawFrame(frame);
+    debugLog("initialDraw", {
+      ready,
+      prefersReducedMotion,
+      frame,
+      frameImageLoaded: Boolean(imagesRef.current[frame]),
+      canvasSize: canvasRef.current
+        ? { w: canvasRef.current.width, h: canvasRef.current.height }
+        : null,
+    });
   }, [ready, prefersReducedMotion, scrollYProgress]);
 
   useMotionValueEvent(scrollYProgress, "change", (value) => {

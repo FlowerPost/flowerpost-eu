@@ -8,6 +8,7 @@ import { VideoStrip } from "@/components/VideoStrip";
 import { ReviewsTeaser } from "@/components/ReviewsTeaser";
 import { TrustScene } from "@/components/TrustScene";
 import { Footer } from "@/components/Footer";
+import { DebugOverlay } from "@/components/DebugOverlay";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <ReviewsTeaser />
       <TrustScene />
       <Footer />
+      <DebugOverlay />
     </main>
   );
 }

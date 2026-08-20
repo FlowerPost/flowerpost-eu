@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
+import { debugLog } from "@/lib/debug";
 
 interface AmbientVideoProps {
   src: string;
@@ -45,25 +46,51 @@ export function AmbientVideo({ src, label, className = "" }: AmbientVideoProps) 
     const el = ref.current;
     if (!el) return;
 
+    const tag = src.split("/").pop() ?? src;
+    const report = (extra?: Record<string, unknown>) => {
+      debugLog(`video:${tag}`, {
+        readyState: el.readyState,
+        networkState: el.networkState,
+        paused: el.paused,
+        currentTime: el.currentTime,
+        videoWidth: el.videoWidth,
+        videoHeight: el.videoHeight,
+        error: el.error ? { code: el.error.code, message: el.error.message } : null,
+        canPlayMp4: el.canPlayType("video/mp4"),
+        ...extra,
+      });
+    };
+
     if (prefersReducedMotion) {
       el.pause();
+      report({ skippedReason: "prefersReducedMotion" });
       return;
     }
 
     let wantsToPlay = false;
 
     const attemptPlay = () => {
-      el.play().catch(() => {
-        // Rejected because there's no data yet (preload="metadata" hasn't
-        // resolved) or because of a genuine autoplay block — either way,
-        // canplay below is the single retry path for both.
-      });
+      el.play()
+        .then(() => report({ playResult: "resolved" }))
+        .catch((err) => {
+          // Rejected because there's no data yet (preload="metadata" hasn't
+          // resolved) or because of a genuine autoplay block — either way,
+          // canplay below is the single retry path for both.
+          report({ playResult: "rejected", playError: String(err) });
+        });
     };
 
     const onCanPlay = () => {
+      report({ event: "canplay" });
       if (wantsToPlay) attemptPlay();
     };
+    const onError = () => report({ event: "error" });
+    const onStalled = () => report({ event: "stalled" });
     el.addEventListener("canplay", onCanPlay);
+    el.addEventListener("error", onError);
+    el.addEventListener("stalled", onStalled);
+
+    report({ event: "mount" });
 
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -73,6 +100,7 @@ export function AmbientVideo({ src, label, className = "" }: AmbientVideoProps) 
         } else {
           el.pause();
         }
+        report({ event: "intersection", isIntersecting: entry.isIntersecting });
       },
       { rootMargin: "200px 0px" },
     );
@@ -81,8 +109,10 @@ export function AmbientVideo({ src, label, className = "" }: AmbientVideoProps) 
     return () => {
       io.disconnect();
       el.removeEventListener("canplay", onCanPlay);
+      el.removeEventListener("error", onError);
+      el.removeEventListener("stalled", onStalled);
     };
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, src]);
 
   return (
     <video
