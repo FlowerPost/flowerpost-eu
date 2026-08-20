@@ -26,7 +26,13 @@ export function LogoSeam() {
     // already dissolves the seam on its own, so the halo was doing no work
     // that justified the artifact. Removing it fixes the rectangle and the
     // overflow together, and no clipping is needed.
-    <div className="relative z-10 -mt-[8vh] mb-4 flex translate-y-[4mm] justify-center px-6 sm:px-8 md:-mt-[15vh]">
+    // Offset is per-breakpoint because the gap it is tuned against is not
+    // constant: IntroStatement steps its padding up (py-28 -> md:py-40 ->
+    // lg:py-56) and its grid moves the "Flowerpost · Bulgaria" label out of
+    // the heading's column at md. Measured against the "Ритуалът на цветята"
+    // heading, a single value lands at 2.96cm / 2.52cm / 4.21cm across the
+    // three; these three land it on 3cm at each.
+    <div className="relative z-10 -mt-[8vh] mb-4 flex translate-y-[23mm] justify-center px-6 sm:px-8 md:-mt-[15vh] md:translate-y-[18mm] lg:translate-y-[35mm]">
       <motion.div
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
